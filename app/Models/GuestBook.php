@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 
-#[Fillable(['name', 'instansi', 'keperluan', 'detail_keperluan', 'no_hp', 'catatan_konsultasi', 'dokumentasi'])]
+#[Fillable(['nomor_antrean', 'name', 'instansi', 'keperluan', 'detail_keperluan', 'keperluan_lainnya', 'no_hp', 'catatan_konsultasi', 'dokumentasi'])]
 class GuestBook extends Model
 {
     //
