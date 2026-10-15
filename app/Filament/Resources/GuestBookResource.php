@@ -167,7 +167,6 @@ class GuestBookResource extends Resource
             'index' => Pages\ListGuestBooks::route('/'),
             'create' => Pages\CreateGuestBook::route('/create'),
             'edit' => Pages\EditGuestBook::route('/{record}/edit'),
-            'guest-queue' => Pages\GuestQueue::route('/queue'),
         ];
     }
 

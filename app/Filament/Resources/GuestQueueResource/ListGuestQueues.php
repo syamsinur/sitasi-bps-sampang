@@ -1,21 +1,19 @@
 <?php
 
-namespace App\Filament\Resources\GuestBookResource\Pages;
+namespace App\Filament\Resources\GuestQueueResource;
 
-use App\Filament\Resources\GuestBookResource;
+use App\Filament\Resources\GuestQueueResource as GuestQueueResource;
 use App\Models\GuestBook;
 use Filament\Resources\Pages\Page;
 
-class GuestQueue extends Page
+class ListGuestQueues extends Page
 {
-    protected static string $resource = GuestBookResource::class;
+    protected static string $resource = GuestQueueResource::class;
+
     protected static string $view = 'filament.pages.guest-queue';
-    protected static ?string $navigationIcon = 'heroicon-o-queue-list';
-    protected static ?string $navigationLabel = 'Antrean Tamu';
+
     protected static ?string $title = 'Antrean Tamu';
-    protected static ?string $navigationGroup = 'Buku Tamu';
-    protected static ?int $navigationSort = 2;
-    protected static bool $shouldRegisterNavigation = true;
+
     protected function getViewData(): array
     {
         return [
@@ -24,10 +22,15 @@ class GuestQueue extends Page
         ];
     }
 
-    private function getAntrean(string $keperluan, string $prefix): array
-    {
+    private function getAntrean(
+        string $keperluan,
+        string $prefix
+    ): array {
         $awalBulan = now()->startOfMonth();
-        $awalBulanDepan = now()->addMonthNoOverflow()->startOfMonth();
+
+        $awalBulanDepan = now()
+            ->addMonthNoOverflow()
+            ->startOfMonth();
 
         $query = GuestBook::query()
             ->where('keperluan', $keperluan)
