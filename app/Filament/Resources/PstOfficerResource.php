@@ -30,6 +30,9 @@ class PstOfficerResource extends Resource
     // title nav
     protected static ?string $navigationLabel = 'Petugas PST';
 
+    // sort
+    protected static ?int $navigationSort = 2;
+
     public static function form(Form $form): Form
     {
         // input form

@@ -34,6 +34,9 @@ class GuestBookResource extends Resource
     // title nav
     protected static ?string $navigationLabel = 'Buku Tamu';
 
+    // sort
+    protected static ?int $navigationSort = 1;
+
     public static function form(Form $form): Form
     {
         // input form
@@ -53,31 +56,39 @@ class GuestBookResource extends Resource
                     ])
                     ->live()
                     ->required(),
-                Select::make('detail_keperluan')
-                    ->label('Detail Keperluan')
-                    ->options(function (Get $get) {
-                        $keperluan = $get('keperluan');
+                    Select::make('detail_keperluan')
+                        ->label('Detail Keperluan')
+                        ->options(function (Get $get) {
+                            if ($get('keperluan') === 'PST') {
+                                return [
+                                    'Rekomendasi statistik' => 'Rekomendasi Statistik',
+                                    'Konsultasi Data' => 'Konsultasi Data',
+                                    'Permintaan Data' => 'Permintaan Data',
+                                    'Lainnya' => 'Lainnya',
+                                ];
+                            }
 
-                        // opsi PST
-                        if ($keperluan === 'PST') {
-                            return [
-                                'Rekomendasi statistik' => 'Rekomendasi Statistik',
-                                'Konsultasi Data' => 'Konsultasi Data',
-                                'Permintaan Data' => 'Permintaan Data'
-                            ];
-                        }
+                            if ($get('keperluan') === 'NON PST') {
+                                return [
+                                    'Keperluan Instansi' => 'Keperluan Instansi',
+                                    'Keperluan Umum' => 'Keperluan Umum',
+                                ];
+                            }
 
-                        else if ($keperluan === 'NON PST') {
-                            return [
-                                'Keperluan Instansi' => 'Keperluan Instansi',
-                                'Keperluan Umum' => 'Keperluan Umum'
-                            ];
-                        }
+                            return [];
+                        })
+                        ->live()
+                        ->required()
+                        ->hidden(fn (Get $get): bool => ! $get('keperluan')),
 
-                        return [];
-                    })
-                    ->hidden(fn (Get $get): bool => ! $get('keperluan'))
-                    ->required(),
+                    TextInput::make('keperluan_lainnya')
+                        ->label('Rincian Keperluan Lainnya')
+                        ->visible(fn (Get $get): bool =>
+                            $get('detail_keperluan') === 'Lainnya'
+                        )
+                        ->required(fn (Get $get): bool =>
+                            $get('detail_keperluan') === 'Lainnya'
+                            ),
                 TextInput::make('no_hp')
                     ->label('No HP')
                     ->numeric()
@@ -172,4 +183,5 @@ class GuestBookResource extends Resource
             'edit' => Pages\EditGuestBook::route('/{record}/edit'),
         ];
     }
+
 }
