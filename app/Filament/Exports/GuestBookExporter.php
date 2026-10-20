@@ -24,8 +24,14 @@ class GuestBookExporter extends Exporter
                 ->label('Detail Keperluan'),
             ExportColumn::make('no_hp')
                 ->label('No HP'),
+            ExportColumn::make('petugas')
+                ->label('Petugas'),
             ExportColumn::make('catatan_konsultasi')
-                ->label('Catatan Konsultasi'),
+                ->label('Catatan Konsultasi')
+                // ->state(function ($record) : ?string {
+                //     return $record->catatan_konsultasi ? html_entity_decode(strip_tags($record->catatan_konsultasi) . ' ') : null;
+                // })
+                ,
             ExportColumn::make('dokumentasi')
                 ->label('Dokumentasi'),
             ExportColumn::make('created_at')

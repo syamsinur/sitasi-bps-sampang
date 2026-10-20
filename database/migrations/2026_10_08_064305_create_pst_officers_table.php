@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('pst_officers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('keahlian');
-            $table->string('hari');
+            $table->string('nomor_hp');
             $table->string('foto')->nullable();
             $table->timestamps();
         });

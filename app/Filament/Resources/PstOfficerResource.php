@@ -38,11 +38,9 @@ class PstOfficerResource extends Resource
                 TextInput::make('name')
                     ->label('Nama')
                     ->required(),
-                TextInput::make('keahlian')
-                    ->label('Keahlian')
-                    ->required(),
-                TextInput::make('hari')
-                    ->label('Hari Tugas')
+                TextInput::make('nomor_hp')
+                    ->label('Nomor HP')
+                    ->numeric()
                     ->required(),
                 FileUpload::make('foto')
                     ->label('Upload Foto')

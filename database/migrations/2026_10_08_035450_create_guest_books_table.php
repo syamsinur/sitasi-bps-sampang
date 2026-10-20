@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('keperluan');
             $table->string('detail_keperluan');
             $table->string('no_hp');
+            $table->string('petugas')->nullable();
             $table->text('catatan_konsultasi')->nullable();
             $table->string('dokumentasi')->nullable();
             $table->timestamps();

@@ -6,15 +6,18 @@ use App\Filament\Exports\GuestBookExporter;
 use App\Filament\Resources\GuestBookResource\Pages;
 use App\Filament\Resources\GuestBookResource\RelationManagers;
 use App\Models\GuestBook;
-use Filament\Tables\Actions\ExportAction;
+use App\Models\PstOfficer;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -79,7 +82,11 @@ class GuestBookResource extends Resource
                     ->label('No HP')
                     ->numeric()
                     ->required(),
-                TextInput::make('catatan_konsultasi')
+                Select::make('petugas')
+                    ->label('Petugas')
+                    ->options(PstOfficer::all()->pluck('name', 'name'))
+                    ->required(),
+                RichEditor::make('catatan_konsultasi')
                     ->label('Catatan Konsultasi')
                     ->required(),
                 FileUpload::make('dokumentasi')
@@ -114,8 +121,12 @@ class GuestBookResource extends Resource
                     ->label('Detail Keperluan'),
                 TextColumn::make('no_hp')
                     ->label('No HP'),
+                TextColumn::make('petugas')
+                    ->label('Petugas'),
                 TextColumn::make('catatan_konsultasi')
-                    ->label('Catatan Konsultasi'),
+                    ->label('Catatan Konsultasi')
+                    // ->html()
+                    ->limit(30),
                 ImageColumn::make('dokumentasi')
                     ->label('Dokumentasi')
                     ->disk('public')

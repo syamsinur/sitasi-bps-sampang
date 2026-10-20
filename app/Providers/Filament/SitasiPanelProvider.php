@@ -25,11 +25,10 @@ class SitasiPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('sitasi')
-            ->path('sitasi')
+            ->path('/')
             ->databaseNotifications()
             ->login()
             ->brandName('Sitasi Bps Sampang')
-            ->brandLogo('public/')
             ->sidebarFullyCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::Orange,
