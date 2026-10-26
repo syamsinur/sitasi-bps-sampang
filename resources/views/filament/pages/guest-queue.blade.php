@@ -1,4 +1,8 @@
 <x-filament-panels::page>
+    {{-- push style custom --}}
+    @push('styles')
+        @vite('resources/css/app.css')
+    @endpush
     <div wire:poll.3s class="space-y-6">
         {{-- Informasi pembaruan --}}
         <div class="flex flex-wrap items-center justify-between gap-3">
@@ -22,10 +26,10 @@
 
 
         {{-- Kartu Antrean: Kiri dan Kanan --}}
-        <div class="flex flex-wrap gap-4 xl:gap-8">
+        <div class="flex flex-wrap gap-4">
 
             {{-- PST: KIRI --}}
-            <div class="w-1/2 relative overflow-hidden rounded-2xl border-2 border-emerald-500 bg-white shadow-lg dark:border-emerald-400 dark:bg-gray-900">
+            <div class="w-1/2 flex-1 relative overflow-hidden rounded-2xl border-2 border-emerald-500 bg-white shadow-lg dark:border-emerald-400 dark:bg-gray-900">
 
                 <div class="h-3 bg-emerald-500"></div>
 
@@ -54,7 +58,7 @@
                             NOMOR ANTREAN
                         </p>
 
-                        <p class="mt-4 break-words text-5xl font-black leading-tight tracking-tight text-emerald-700 sm:text-6xl lg:text-7xl xl:text-8xl dark:text-emerald-300">
+                        <p class="mt-4 wrap-break-words text-5xl font-black leading-tight tracking-tight text-emerald-700 sm:text-6xl lg:text-7xl xl:text-8xl dark:text-emerald-300">
                             {{ $pst['nomor'] }}
                         </p>
 
@@ -93,7 +97,7 @@
 
 
             {{-- NON PST: KANAN --}}
-            <div class="w-1/2 relative overflow-hidden rounded-2xl border-2 border-blue-500 bg-white shadow-lg dark:border-blue-400 dark:bg-gray-900">
+            <div class="w-1/2 flex-1 relative overflow-hidden rounded-2xl border-2 border-blue-500 bg-white shadow-lg dark:border-blue-400 dark:bg-gray-900">
 
                 <div class="h-3 bg-blue-600"></div>
 
@@ -122,7 +126,7 @@
                             NOMOR ANTREAN
                         </p>
 
-                        <p class="mt-4 break-words text-5xl font-black leading-tight tracking-tight text-blue-700 sm:text-6xl lg:text-7xl xl:text-8xl dark:text-blue-300">
+                        <p class="mt-4 wrap-break-words text-5xl font-black leading-tight tracking-tight text-blue-700 sm:text-6xl lg:text-7xl xl:text-8xl dark:text-blue-300">
                             {{ $nonPst['nomor'] }}
                         </p>
 

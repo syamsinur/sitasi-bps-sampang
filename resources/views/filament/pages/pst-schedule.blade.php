@@ -1,13 +1,18 @@
 <x-filament-panels::page>
+    {{-- push style custom --}}
+    @push('styles')
+        @vite('resources/css/app.css')
+    @endpush
+
     {{-- title --}}
     <div class="space-y-4 w-full">
     
         {{-- schedule day --}}
         <div class="flex flex-wrap gap-4 justify-center">
             @foreach($schedulePetugas as $item)
-                <div class="p-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 text-center flex flex-col items-center justify-between">
+                <div class="w-40 p-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm border-2! border-orange-400! border-l-8! dark:border-gray-800! text-center flex flex-col items-center justify-between">
                     <div>
-                        <span class="text-xs font-bold uppercase tracking-wider text-primary-600 dark:text-primary-400">
+                        <span class="text-sm font-bold uppercase tracking-wider text-primary-600 dark:text-primary-400">
                             {{ $item['hari'] }}
                         </span>
                     </div>
@@ -15,12 +20,12 @@
                     <div class="my-4">
                         @if($item['petugas'])
                             {{-- foto --}}
-                            <div class="w-16 h-16">
+                            <div class="w-24 h-24">
                             <img src="{{ asset('storage/' . $item['petugas']->foto) }}" 
                                 alt="{{ $item['petugas']->name }}" 
-                                class="w-full h-full object-cover rounded-full">
+                                class="w-full h-full object-cover rounded-xl">
                             </div>
-                            <p class="font-semibold text-sm text-gray-900 dark:text-white">
+                            <p class="mt-2 font-semibold text-sm text-gray-900 dark:text-white">
                                 {{ $item['petugas']->name }}
                             </p>
                         @else
@@ -31,8 +36,8 @@
                         @endif
                     </div>
 
-                    <div class="text-[10px] text-gray-400">
-                        PST BPS Sampang
+                    <div class="text-xs text-gray-400">
+                        {{ $item['petugas']->nomor_hp }}
                     </div>
                 </div>
             @endforeach
@@ -45,14 +50,14 @@
     {{-- master petugas --}}
     <div class="space-y-4">
         <div class="flex items-center justify-between">
-            <h2 class="text-lg font-bold tracking-tight text-gray-950 dark:text-white">Daftar Master Petugas PST</h2>
+            <h2 class="text-lg font-bold tracking-tight text-gray-950 dark:text-white">Daftar Petugas PST</h2>
         </div>
 
         <div class="bg-white dark:bg-gray-900 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800">
             {{-- table petugas --}}
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs uppercase bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                    <thead class="text-xs uppercase bg-orange-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
                         <tr>
                             <th class="px-4 py-3">No</th>
                             <th class="px-4 py-3">Nama Petugas</th>

@@ -8,6 +8,7 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListPstOfficers extends ListRecords
 {
+    // resource
     protected static string $resource = PstOfficerResource::class;
 
     // title

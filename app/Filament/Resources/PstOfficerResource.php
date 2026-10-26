@@ -70,8 +70,8 @@ class PstOfficerResource extends Resource
         // table list
         return $table
             ->contentGrid([
-                'md' => 2,
-                'xl' => 3,
+                'md' => 3,
+                'xl' => 4,
             ])
             ->columns([
                 Stack::make([
@@ -85,8 +85,8 @@ class PstOfficerResource extends Resource
                         ImageColumn::make('foto')
                             ->label('Foto')
                             ->disk('public')
-                            ->height(200)
-                            ->width(200)
+                            ->height(120)
+                            ->width(120)
                             ->circular()
                             ->alignment('center'),
                     ])->extraAttributes([

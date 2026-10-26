@@ -8,6 +8,7 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListGuestBooks extends ListRecords
 {
+    // resource
     protected static string $resource = GuestBookResource::class;
 
     // title

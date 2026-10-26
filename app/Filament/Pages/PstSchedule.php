@@ -32,6 +32,7 @@ class PstSchedule extends Page
         $petugasPst = PstOfficer::all();
 
         // dd($petugasPst);
+        
         // total petugas
         $totalPetugas = $petugasPst->count();
         
@@ -52,7 +53,7 @@ class PstSchedule extends Page
         foreach($workDay as $index => $day) {
             $schedulePetugas[] = [
                 'hari' => $day,
-                'petugas' => $totalPetugas > 0 ? $petugasShuffled->get($index % $totalPetugas) : null,
+                'petugas' => $totalPetugas > 0 ? $petugasShuffled->get($index % $totalPetugas) : null
             ];
         }
 

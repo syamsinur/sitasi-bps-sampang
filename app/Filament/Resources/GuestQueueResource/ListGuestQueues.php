@@ -25,7 +25,8 @@ class ListGuestQueues extends Page
     private function getAntrean(
         string $keperluan,
         string $prefix
-    ): array {
+    ): array
+    {
         $awalBulan = now()->startOfMonth();
 
         $awalBulanDepan = now()
