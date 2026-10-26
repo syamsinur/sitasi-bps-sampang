@@ -9,7 +9,6 @@ use App\Models\GuestBook;
 use App\Models\PstOfficer;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -37,6 +36,7 @@ class GuestBookResource extends Resource
     // sort
     protected static ?int $navigationSort = 1;
 
+
     public static function form(Form $form): Form
     {
         // input form
@@ -56,39 +56,39 @@ class GuestBookResource extends Resource
                     ])
                     ->live()
                     ->required(),
-                    Select::make('detail_keperluan')
-                        ->label('Detail Keperluan')
-                        ->options(function (Get $get) {
-                            if ($get('keperluan') === 'PST') {
-                                return [
-                                    'Rekomendasi statistik' => 'Rekomendasi Statistik',
-                                    'Konsultasi Data' => 'Konsultasi Data',
-                                    'Permintaan Data' => 'Permintaan Data',
-                                    'Lainnya' => 'Lainnya',
-                                ];
-                            }
+                Select::make('detail_keperluan')
+                    ->label('Detail Keperluan')
+                    ->options(function (Get $get) {
+                        if ($get('keperluan') === 'PST') {
+                            return [
+                                'Rekomendasi statistik' => 'Rekomendasi Statistik',
+                                'Konsultasi Data' => 'Konsultasi Data',
+                                'Permintaan Data' => 'Permintaan Data',
+                                'Lainnya' => 'Lainnya',
+                            ];
+                        }
 
-                            if ($get('keperluan') === 'NON PST') {
-                                return [
-                                    'Keperluan Instansi' => 'Keperluan Instansi',
-                                    'Keperluan Umum' => 'Keperluan Umum',
-                                ];
-                            }
+                        if ($get('keperluan') === 'NON PST') {
+                            return [
+                                'Keperluan Instansi' => 'Keperluan Instansi',
+                                'Keperluan Umum' => 'Keperluan Umum',
+                                'Lainnya' => 'Lainnya',
+                            ];
+                        }
 
-                            return [];
-                        })
-                        ->live()
-                        ->required()
-                        ->hidden(fn (Get $get): bool => ! $get('keperluan')),
-
-                    TextInput::make('keperluan_lainnya')
-                        ->label('Rincian Keperluan Lainnya')
-                        ->visible(fn (Get $get): bool =>
-                            $get('detail_keperluan') === 'Lainnya'
-                        )
-                        ->required(fn (Get $get): bool =>
-                            $get('detail_keperluan') === 'Lainnya'
-                            ),
+                        return [];
+                    })
+                    ->live()
+                    ->required()
+                    ->hidden(fn (Get $get): bool => ! $get('keperluan')),
+                TextInput::make('keperluan_lainnya')
+                    ->label('Rincian Keperluan Lainnya')
+                    ->visible(fn (Get $get): bool =>
+                        $get('detail_keperluan') === 'Lainnya'
+                    )
+                    ->required(fn (Get $get): bool =>
+                        $get('detail_keperluan') === 'Lainnya'
+                        ),
                 TextInput::make('no_hp')
                     ->label('No HP')
                     ->numeric()
@@ -97,7 +97,7 @@ class GuestBookResource extends Resource
                     ->label('Petugas')
                     ->options(PstOfficer::all()->pluck('name', 'name'))
                     ->required(),
-                RichEditor::make('catatan_konsultasi')
+                Textarea::make('catatan_konsultasi')
                     ->label('Catatan Konsultasi')
                     ->required(),
                 FileUpload::make('dokumentasi')
@@ -129,7 +129,13 @@ class GuestBookResource extends Resource
                 TextColumn::make('keperluan')
                     ->label('Keperluan'),
                 TextColumn::make('detail_keperluan')
-                    ->label('Detail Keperluan'),
+                    ->label('Detail Keperluan')
+                    ->getStateUsing(function (GuestBook $record) {
+                        if($record->detail_keperluan === 'Lainnya') {
+                            return $record->keperluan_lainnya ?? 'Lainnya';
+                        }
+                        return $record->detail_keperluan;
+                    }),
                 TextColumn::make('no_hp')
                     ->label('No HP'),
                 TextColumn::make('petugas')

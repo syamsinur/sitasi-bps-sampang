@@ -21,7 +21,13 @@ class GuestBookExporter extends Exporter
             ExportColumn::make('keperluan')
                 ->label('Keperluan'),
             ExportColumn::make('detail_keperluan')
-                ->label('Detail Keperluan'),
+                ->label('Detail Keperluan')
+                ->getStateUsing(function (GuestBook $record) {
+                    if($record->detail_keperluan === 'Lainnya') {
+                        return $record->keperluan_lainnya ?? 'Lainnya';
+                    }
+                    return $record->detail_keperluan;
+                }),
             ExportColumn::make('no_hp')
                 ->label('No HP'),
             ExportColumn::make('petugas')

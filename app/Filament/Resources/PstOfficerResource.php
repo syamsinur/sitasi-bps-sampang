@@ -33,6 +33,9 @@ class PstOfficerResource extends Resource
     // sort
     protected static ?int $navigationSort = 2;
 
+    // group
+    protected static ?string $navigationGroup = 'PST';
+
     public static function form(Form $form): Form
     {
         // input form

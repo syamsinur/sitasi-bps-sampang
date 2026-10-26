@@ -10,6 +10,12 @@ class EditGuestBook extends EditRecord
 {
     protected static string $resource = GuestBookResource::class;
 
+    // redirect
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
     protected function getHeaderActions(): array
     {
         return [

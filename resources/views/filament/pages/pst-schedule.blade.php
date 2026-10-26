@@ -1,7 +1,6 @@
 <x-filament-panels::page>
     {{-- title --}}
     <div class="space-y-4 w-full">
-        <h2 class="text-lg font-bold tracking-tight text-gray-950 dark:text-white">Jadwal Petugas PST Mingguan</h2>
     
         {{-- schedule day --}}
         <div class="flex flex-wrap gap-4 justify-center">
@@ -40,17 +39,17 @@
         </div>
     </div>
 
-    <!-- GARIS PEMBATAS -->
+    {{-- line --}}
     <hr class="border-gray-200 dark:border-gray-800 my-6">
 
-    <!-- BAGIAN BAWAH: DAFTAR / MASTER DATA PETUGAS -->
+    {{-- master petugas --}}
     <div class="space-y-4">
         <div class="flex items-center justify-between">
             <h2 class="text-lg font-bold tracking-tight text-gray-950 dark:text-white">Daftar Master Petugas PST</h2>
         </div>
 
         <div class="bg-white dark:bg-gray-900 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800">
-            <!-- Tabel sederhana atau list master data petugas -->
+            {{-- table petugas --}}
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
                     <thead class="text-xs uppercase bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">

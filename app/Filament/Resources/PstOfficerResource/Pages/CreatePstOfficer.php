@@ -9,4 +9,10 @@ use Filament\Resources\Pages\CreateRecord;
 class CreatePstOfficer extends CreateRecord
 {
     protected static string $resource = PstOfficerResource::class;
+
+    // redirect
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

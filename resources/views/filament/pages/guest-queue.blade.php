@@ -22,10 +22,10 @@
 
 
         {{-- Kartu Antrean: Kiri dan Kanan --}}
-        <div class="grid grid-cols-2 gap-4 xl:gap-8">
+        <div class="flex flex-wrap gap-4 xl:gap-8">
 
             {{-- PST: KIRI --}}
-            <div class="relative overflow-hidden rounded-2xl border-2 border-emerald-500 bg-white shadow-lg dark:border-emerald-400 dark:bg-gray-900">
+            <div class="w-1/2 relative overflow-hidden rounded-2xl border-2 border-emerald-500 bg-white shadow-lg dark:border-emerald-400 dark:bg-gray-900">
 
                 <div class="h-3 bg-emerald-500"></div>
 
@@ -93,7 +93,7 @@
 
 
             {{-- NON PST: KANAN --}}
-            <div class="relative overflow-hidden rounded-2xl border-2 border-blue-500 bg-white shadow-lg dark:border-blue-400 dark:bg-gray-900">
+            <div class="w-1/2 relative overflow-hidden rounded-2xl border-2 border-blue-500 bg-white shadow-lg dark:border-blue-400 dark:bg-gray-900">
 
                 <div class="h-3 bg-blue-600"></div>
 
