@@ -199,7 +199,7 @@
             <div class="bg-white dark:bg-gray-900 rounded-3xl p-8 max-w-lg w-full shadow-2xl text-center border border-gray-200 dark:border-gray-800">
                 
                 <div class="flex justify-between items-center mb-2">
-                    <span class="bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-xs font-extrabold px-3.5 py-1.5 rounded-full uppercase tracking-wider">
+                    <span class="bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-xs font-extrabold px-3.5 py-1.5 rounded-full tracking-wider">
                         Antrean Baru Terdaftar!
                     </span>
                     
@@ -231,7 +231,7 @@
                 </div>
 
                 <div class="mt-6 flex gap-3">
-                    {{-- Tombol manual kalau mau ditutup lebih cepat --}}
+                    {{-- button close manual --}}
                     <button wire:click="closeModal" 
                             class="w-full bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 font-bold py-3 px-6 rounded-2xl transition text-sm">
                         Tutup Sekarang

@@ -32,9 +32,10 @@ class SitasiPanelProvider extends PanelProvider
             ->path('/')
             ->databaseNotifications()
             ->login()
-            ->brandName('Sitasi Bps Sampang')
+            ->brandLogo(fn() => view('filament.widgets.brand'))
+            ->favicon(asset('images/logo.png'))
             ->sidebarFullyCollapsibleOnDesktop()
-            ->sidebarWidth('18rem')
+            ->sidebarWidth('19rem')
             ->colors(['primary' => Color::Orange])
             ->renderHook( // render jadwal petugas hari ini
                 PanelsRenderHook::SIDEBAR_NAV_END,

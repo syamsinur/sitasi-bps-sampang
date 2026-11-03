@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Status Antrean PST BPS Sampang</title>
     <!-- Menggunakan Tailwind CSS via CDN agar tampilannya rapi -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite('resources/css/app.css')
 </head>
-<body class="bg-gray-50 flex items-center justify-center min-h-screen p-4">
-    <div class="bg-white w-full max-w-md rounded-2xl shadow-lg p-6 text-center space-y-6 border border-gray-100">
+<body class="bg-gray-50 dark:bg-slate-500 flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white dark:bg-slate-600 w-full max-w-md rounded-2xl shadow-lg p-6 text-center space-y-6 border border-gray-100">
         @if (isset($data->status) && $data->status === 'Selesai')
             <div>
                 <span class="text-xs font-semibold tracking-wider text-blue-600 uppercase bg-blue-50 px-3 py-1 rounded-full">
                     Sistem Antrean Tamu
                 </span>
-                <h1 class="text-2xl font-bold text-gray-800 mt-3">Halo, {{ $data->name }}</h1>
-                <p class="text-sm text-gray-500">{{ $data->instansi }}</p>
+                <h1 class="text-2xl font-bold text-gray-800 dark:text-slate-200 mt-3">Halo, {{ $data->name }}</h1>
+                <p class="text-sm text-gray-500 dark:text-gray-200">{{ $data->instansi }}</p>
             </div>
 
             <div class="bg-gray-50 rounded-xl p-4 border border-gray-200 space-y-3">
