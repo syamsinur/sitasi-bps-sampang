@@ -3,62 +3,86 @@
 namespace App\Filament\Resources\GuestQueueResource;
 
 use App\Filament\Resources\GuestQueueResource as GuestQueueResource;
-use App\Models\GuestBook;
+use App\Models\PstOfficer;
+use App\Models\WaitingList;
 use Filament\Resources\Pages\Page;
 
 class ListGuestQueues extends Page
 {
+    // resource
     protected static string $resource = GuestQueueResource::class;
 
+    // view
     protected static string $view = 'filament.pages.guest-queue';
 
+    // title
     protected static ?string $title = 'Antrean Tamu';
 
+    // Properti untuk melacak antrean terbaru
+    public ?int $latestQueueId = null;
+    public $activeModalQueue = null;
+    public bool $showModal = false;
+
+    public function mount()
+    {
+        // Ambil ID tamu terakhir saat halaman pertama kali dibuka
+        $latest = WaitingList::latest('id')->first();
+        $this->latestQueueId = $latest?->id;
+    }
+
+    // Fungsi yang akan dipanggil secara periodik oleh wire:poll di Blade
+    public function checkForNewQueue()
+    {
+        $latest = WaitingList::latest('id')->first();
+
+        // Jika ada ID baru yang masuk (berbeda dari sebelumnya)
+        if ($latest && $latest->id !== $this->latestQueueId) {
+            $this->latestQueueId = $latest->id;
+            $this->activeModalQueue = $latest;
+            $this->showModal = true; // Munculkan modal otomatis!
+        }
+    }
+
+    public function closeModal()
+    {
+        $this->showModal = false;
+        $this->activeModalQueue = null;
+    }
+    
     protected function getViewData(): array
     {
         return [
-            'pst' => $this->getAntrean('PST', 'TP'),
-            'nonPst' => $this->getAntrean('NON PST', 'TN'),
+            'pst' => $this->getAntreanProses('PST'),
+            'nonPst' => $this->getAntreanProses('NON PST'),
         ];
     }
 
-    private function getAntrean(
-        string $keperluan,
-        string $prefix
-    ): array
+    private function getAntreanProses(string $keperluan): array
     {
-        $awalBulan = now()->startOfMonth();
+        // tamu Diproses
+        $tamuAktif = WaitingList::query()
+            ->where('keperluan', $keperluan)
+            ->where('status', 'Diproses')
+            ->latest('updated_at')
+            ->first();
 
+        // total tamu bulan berjalan
+        $awalBulan = now()->startOfMonth();
         $awalBulanDepan = now()
             ->addMonthNoOverflow()
             ->startOfMonth();
 
-        $query = GuestBook::query()
+        $totalBulanIni = WaitingList::query()
             ->where('keperluan', $keperluan)
-            ->where('created_at', '>=', $awalBulan)
-            ->where('created_at', '<', $awalBulanDepan);
-
-        $nomorTerakhir = (clone $query)
-            ->pluck('nomor_antrean')
-            ->map(function ($nomor) use ($prefix) {
-                if (
-                    ! is_string($nomor) ||
-                    ! preg_match(
-                        '/^' . preg_quote($prefix, '/') . '-(\d+)$/',
-                        $nomor,
-                        $matches
-                    )
-                ) {
-                    return 0;
-                }
-
-                return (int) $matches[1];
-            })
-            ->max() ?? 0;
+            ->whereBetween('created_at', [$awalBulan, $awalBulanDepan])
+            ->count();
 
         return [
-            'nomor' => sprintf('%s-%03d', $prefix, $nomorTerakhir),
-            'total' => (clone $query)->count(),
+            'nomor'    => $tamuAktif ? $tamuAktif->nomor_antrean : '-',
+            'nama'     => $tamuAktif ? $tamuAktif->name : 'Tidak ada antrean',
+            'instansi' => $tamuAktif ? $tamuAktif->instansi : '-',
+            'petugas'  => $tamuAktif ? $tamuAktif->petugas : '-',
+            'total'    => $totalBulanIni,
         ];
     }
 }

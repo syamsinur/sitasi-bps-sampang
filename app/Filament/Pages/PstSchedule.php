@@ -15,10 +15,13 @@ class PstSchedule extends Page
     protected static ?string $navigationLabel = 'Jadwal Petugas PST';
 
     // title
-    protected static ?string $title = 'Jadwal Petugas PST Mingguan';
+    protected static ?string $title = 'Jadwal Petugas PST';
+
+    // slug
+    protected static ?string $slug = 'jadwal-petugas-pst';
 
     // sort
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 5;
 
     // group
     protected static ?string $navigationGroup = 'PST';
@@ -28,33 +31,38 @@ class PstSchedule extends Page
 
     public function getViewData(): array
     {
-        // retrieve data
-        $petugasPst = PstOfficer::all();
+        // ==========================================================
+        // CARA TESTING / SIMULASI WAKTU
+        // ==========================================================
+        // Coba ganti-ganti minggu untuk melihat pergeseran petugas:
+        Carbon::setTestNow(Carbon::now()); // Minggu ini (posisi awal)
+        // Carbon::setTestNow(Carbon::now()->addWeek()); // Maju 1 minggu ke depan
+        // Carbon::setTestNow(Carbon::now()->addWeeks(2)); // Maju 2 minggu ke depan
+        // ==========================================================
 
-        // dd($petugasPst);
+        // retrieve data
+        $petugasPst = PstOfficer::orderBy('no_urut', 'asc')->orderBy('id', 'asc')->get();
         
         // total petugas
         $totalPetugas = $petugasPst->count();
         
-        // get week and year
-        $currentWeek = Carbon::now()->weekOfYear;
-        $currentYear = Carbon::now()->year;
-
-        // suffle petugas using crc32
-        $petugasShuffled = $petugasPst->sortBy(function ($petugas) use ($currentWeek, $currentYear) {
-            return crc32($petugas->id . '-' . $currentWeek . '-' . $currentYear);
-        })->values();
-
         // working day
         $workDay = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
         $schedulePetugas = [];
-        
-        // assign petugas to schedule
-        foreach($workDay as $index => $day) {
-            $schedulePetugas[] = [
-                'hari' => $day,
-                'petugas' => $totalPetugas > 0 ? $petugasShuffled->get($index % $totalPetugas) : null
-            ];
+
+        if($totalPetugas > 0) {
+            // get week
+            $currentWeek = Carbon::now()->weekOfYear;
+
+            // assign petugas to schedule
+            foreach($workDay as $index => $day) {
+                $petugasIndex = (($currentWeek - 1) * 5 + $index) % $totalPetugas;
+
+                $schedulePetugas[] = [
+                    'hari' => $day,
+                    'petugas' => $petugasPst->values()->get($petugasIndex),
+                ];
+            }
         }
 
         // return to view
@@ -63,5 +71,34 @@ class PstSchedule extends Page
             'petugasPst' => $petugasPst,
             'totalPetugas' => $totalPetugas
         ];
+    }
+
+    // Tambahkan fungsi ini di dalam class Page Filament (tempat getViewData berada)
+    public function moveOfficer(int $id, string $direction)
+    {
+        $officer = PstOfficer::find($id);
+        if (!$officer) return;
+
+        if ($direction === 'up') {
+            $swapOfficer = PstOfficer::where('no_urut', '<', $officer->no_urut)
+                ->orderBy('no_urut', 'desc')
+                ->first();
+        } else {
+            $swapOfficer = PstOfficer::where('no_urut', '>', $officer->no_urut)
+                ->orderBy('no_urut', 'asc')
+                ->first();
+        }
+
+        if ($swapOfficer) {
+            $tempOrder = $officer->no_urut;
+            $officer->no_urut = $swapOfficer->no_urut;
+            $swapOfficer->no_urut = $tempOrder;
+
+            $officer->save();
+            $swapOfficer->save();
+        }
+
+        // Refresh halaman agar jadwal & tabel langsung terupdate
+        $this->dispatch('$refresh');
     }
 }

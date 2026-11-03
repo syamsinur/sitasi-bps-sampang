@@ -25,13 +25,20 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class GuestBookResource extends Resource
 {
+    // model
     protected static ?string $model = GuestBook::class;
+
+    // model label
+    protected static ?string $modelLabel = 'Buku Tamu';
 
     // icon
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
 
     // title nav
     protected static ?string $navigationLabel = 'Buku Tamu';
+
+    // slug
+    protected static ?string $slug = 'buku-tamu';
 
     // sort
     protected static ?int $navigationSort = 1;
@@ -152,6 +159,17 @@ class GuestBookResource extends Resource
                 TextColumn::make('created_at')
                     ->label('Tanggal')
                     ->dateTime('d-m-Y'),
+                TextColumn::make('status')
+                    ->label('Status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Menunggu' => 'gray',
+                        'Diproses' => 'warning',
+                        'Selesai' => 'success'
+                    })
+                    ->getStateUsing(function (GuestBook $record) {
+                        return $record->status;
+                    }),
             ])
             ->filters([
                 //
@@ -159,9 +177,11 @@ class GuestBookResource extends Resource
             ->headerActions([
                 ExportAction::make()
                     ->exporter(GuestBookExporter::class)
-                    ->label('Export Excel/CSV')
+                    ->label('Export Buku Tamu')
                     ->icon('heroicon-m-arrow-down-tray')
                     ->color('success')
+                    ->modalHeading('Export Buku Tamu')
+                    ->modalSubmitActionLabel('Export')
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

@@ -4,11 +4,16 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\GuestQueueResource\ListGuestQueues;
 use App\Models\GuestBook;
+use App\Models\WaitingList;
 use Filament\Resources\Resource;
 
 class GuestQueueResource extends Resource
 {
-    protected static ?string $model = GuestBook::class;
+    // model
+    protected static ?string $model = WaitingList::class;
+
+    // model label
+    protected static ?string $modelLabel = 'Antrean';
 
     // icon
     protected static ?string $navigationIcon = 'heroicon-o-queue-list';
@@ -20,7 +25,7 @@ class GuestQueueResource extends Resource
     protected static ?string $slug = 'antrean-tamu';
 
     // sort
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 2;
 
     public static function getPages(): array
     {

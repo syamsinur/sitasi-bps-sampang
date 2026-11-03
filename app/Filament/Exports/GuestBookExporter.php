@@ -9,6 +9,7 @@ use Filament\Actions\Exports\Models\Export;
 
 class GuestBookExporter extends Exporter
 {
+    // model
     protected static ?string $model = GuestBook::class;
 
     public static function getColumns(): array

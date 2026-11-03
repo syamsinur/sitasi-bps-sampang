@@ -12,12 +12,14 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\View\PanelsRenderHook;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class SitasiPanelProvider extends PanelProvider
@@ -32,9 +34,11 @@ class SitasiPanelProvider extends PanelProvider
             ->login()
             ->brandName('Sitasi Bps Sampang')
             ->sidebarFullyCollapsibleOnDesktop()
-            ->colors([
-                'primary' => Color::Orange,
-            ])
+            ->colors(['primary' => Color::Orange])
+            ->renderHook( // render jadwal petugas hari ini
+                PanelsRenderHook::SIDEBAR_NAV_END,
+                fn (): string => view('filament.widgets.sidebar-petugas')->render()
+            )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([

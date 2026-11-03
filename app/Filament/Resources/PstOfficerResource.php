@@ -7,6 +7,7 @@ use App\Filament\Resources\PstOfficerResource\RelationManagers;
 use App\Models\PstOfficer;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -22,7 +23,11 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PstOfficerResource extends Resource
 {
+    // model
     protected static ?string $model = PstOfficer::class;
+
+    // model label
+    protected static ?string $modelLabel = 'Petugas PST';
 
     // icon
     protected static ?string $navigationIcon = 'heroicon-o-user';
@@ -30,8 +35,11 @@ class PstOfficerResource extends Resource
     // title nav
     protected static ?string $navigationLabel = 'Petugas PST';
 
+    // slug
+    protected static ?string $slug = 'petugas-pst';
+
     // sort
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 4;
 
     // group
     protected static ?string $navigationGroup = 'PST';
@@ -44,6 +52,14 @@ class PstOfficerResource extends Resource
                 TextInput::make('name')
                     ->label('Nama')
                     ->required(),
+                TextInput::make('nip')
+                    ->label('NIP')
+                    ->required(),
+                Select::make('work_team_id')
+                    ->label('Work Team')
+                    ->relationship('work_team', 'name')
+                    ->required()
+                    ,
                 TextInput::make('nomor_hp')
                     ->label('Nomor HP')
                     ->numeric()

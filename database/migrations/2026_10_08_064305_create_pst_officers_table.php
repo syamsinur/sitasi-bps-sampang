@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('pst_officers', function (Blueprint $table) {
             $table->id();
+            $table->integer('no_urut');
             $table->string('name');
+            $table->string('nip');
+            $table->foreignId('work_team_id')->constrained()->cascadeOnDelete();
             $table->string('nomor_hp');
             $table->string('foto')->nullable();
             $table->timestamps();

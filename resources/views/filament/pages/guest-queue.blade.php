@@ -3,27 +3,15 @@
     @push('styles')
         @vite('resources/css/app.css')
     @endpush
-    <div wire:poll.3s class="space-y-6">
+    <div wire:poll.3s="checkForNewQueue" class="space-y-2">
         {{-- Informasi pembaruan --}}
-        <div class="flex flex-wrap items-center justify-between gap-3">
-            <div>
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white">
-                    Ringkasan Antrean
-                </h3>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                    Nomor antrean dan jumlah tamu bulan berjalan.
-                </p>
-            </div>
-
-            <div class="inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-3 py-2 text-xs font-medium text-green-700 dark:border-green-900 dark:bg-green-950 dark:text-green-400">
+            <div class="inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-3 text-xs font-medium text-green-700 dark:border-green-900 dark:bg-green-950 dark:text-green-400">
                 <span class="relative flex h-2 w-2">
                     <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
                     <span class="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
                 </span>
                 Pembaruan otomatis
             </div>
-        </div>
-
 
         {{-- Kartu Antrean: Kiri dan Kanan --}}
         <div class="flex flex-wrap gap-4">
@@ -58,7 +46,7 @@
                             NOMOR ANTREAN
                         </p>
 
-                        <p class="mt-4 wrap-break-words text-5xl font-black leading-tight tracking-tight text-emerald-700 sm:text-6xl lg:text-7xl xl:text-8xl dark:text-emerald-300">
+                        <p class="mt-4 wrap-break-words text-4xl font-black leading-tight tracking-tight text-emerald-700 sm:text-5xl lg:text-6xl xl:text-7xl dark:text-emerald-300">
                             {{ $pst['nomor'] }}
                         </p>
 
@@ -84,7 +72,7 @@
                         </div>
 
                         <div class="flex items-baseline gap-2">
-                            <p class="text-4xl font-black text-gray-900 dark:text-white sm:text-5xl lg:text-6xl">
+                            <p class="text-3xl font-black text-gray-900 dark:text-white sm:text-4xl lg:text-5xl">
                                 {{ number_format($pst['total'], 0, ',', '.') }}
                             </p>
                             <span class="text-sm font-bold text-gray-600 dark:text-gray-300 sm:text-base">
@@ -94,7 +82,6 @@
                     </div>
                 </div>
             </div>
-
 
             {{-- NON PST: KANAN --}}
             <div class="w-1/2 flex-1 relative overflow-hidden rounded-2xl border-2 border-blue-500 bg-white shadow-lg dark:border-blue-400 dark:bg-gray-900">
@@ -126,7 +113,7 @@
                             NOMOR ANTREAN
                         </p>
 
-                        <p class="mt-4 wrap-break-words text-5xl font-black leading-tight tracking-tight text-blue-700 sm:text-6xl lg:text-7xl xl:text-8xl dark:text-blue-300">
+                        <p class="mt-4 wrap-break-words text-4xl font-black leading-tight tracking-tight text-blue-700 sm:text-5xl lg:text-6xl xl:text-7xl dark:text-blue-300">
                             {{ $nonPst['nomor'] }}
                         </p>
 
@@ -152,7 +139,7 @@
                         </div>
 
                         <div class="flex items-baseline gap-2">
-                            <p class="text-4xl font-black text-gray-900 dark:text-white sm:text-5xl lg:text-6xl">
+                            <p class="text-3xl font-black text-gray-900 dark:text-white sm:text-4xl lg:text-5xl">
                                 {{ number_format($nonPst['total'], 0, ',', '.') }}
                             </p>
                             <span class="text-sm font-bold text-gray-600 dark:text-gray-300 sm:text-base">
@@ -164,7 +151,94 @@
             </div>
 
         </div>
-
-
     </div>
+
+    {{-- petugas hari ini --}}
+    @if(isset($petugasHariIni) && $petugasHariIni)
+            <div class=" absolute top-35 right-8 flex items-center gap-3 bg-white dark:bg-gray-900 px-4 py-2.5 rounded-2xl shadow-sm border border-orange-200! dark:border-gray-800 animate-pulse">
+                <div class="w-15 h-15 rounded-xl overflow-hidden shadow-sm border border-orange-300 dark:border-gray-700 shrink-0">
+                    <img src="{{ asset('storage/' . $petugasHariIni->foto) }}" 
+                         alt="{{ $petugasHariIni->name }}" 
+                         class="w-full h-full object-cover">
+                </div>
+                <div>
+                    <p class="text-[10px] font-extrabold uppercase tracking-wider text-orange-600 dark:text-orange-400">
+                        Petugas Hari Ini ({{ $namaHariIni }})
+                    </p>
+                    <p class="text-xs font-bold text-gray-900 dark:text-white">
+                        {{ $petugasHariIni->name }}
+                    </p>
+                </div>
+            </div>
+        @endif
+
+    {{-- modal qr code --}}
+    @if($showModal && $activeModalQueue)
+        <div x-data="{ 
+                timer: 300, 
+                interval: null,
+                init() {
+                    // Menghitung mundur 
+                    this.interval = setInterval(() => {
+                        if (this.timer > 0) {
+                            this.timer--;
+                        } else {
+                            clearInterval(this.interval);
+                            // call function close modal
+                            @this.call('closeModal');
+                        }
+                    }, 1000);
+                },
+                destroy() {
+                    clearInterval(this.interval);
+                }
+            }" 
+            x-init="init()"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+            
+            <div class="bg-white dark:bg-gray-900 rounded-3xl p-8 max-w-lg w-full shadow-2xl text-center border border-gray-200 dark:border-gray-800">
+                
+                <div class="flex justify-between items-center mb-2">
+                    <span class="bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-xs font-extrabold px-3.5 py-1.5 rounded-full uppercase tracking-wider">
+                        Antrean Baru Terdaftar!
+                    </span>
+                    
+                    {{-- Indikator Timer Hitung Mundur --}}
+                    <span class="text-xs font-bold text-gray-400 bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full">
+                        Tutup otomatis dalam <span x-text="timer" class="text-emerald-600 font-black"></span>s
+                    </span>
+                </div>
+
+                <h2 class="mt-4 text-4xl font-black text-gray-900 dark:text-white">
+                    {{ $activeModalQueue->nomor_antrean }}
+                </h2>
+
+                <p class="mt-1 text-lg font-bold text-gray-700 dark:text-gray-200">
+                    {{ $activeModalQueue->name }} <span class="text-sm font-normal text-gray-500">({{ $activeModalQueue->instansi }})</span>
+                </p>
+
+                <p class="text-xs text-gray-500 mt-2">Silakan scan QR code di bawah ini menggunakan HP untuk memantau antrean secara real-time:</p>
+
+                {{-- QR Code API --}}
+                <div class="mt-4 inline-block bg-white p-4 rounded-2xl border shadow-md">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=170x170&data={{ route('cek.antrean', $activeModalQueue->token) }}" 
+                        alt="QR Code Antrean" 
+                        class="rounded mx-auto">
+                </div>
+
+                <div class="mt-3 bg-gray-50 dark:bg-gray-800 p-2.5 rounded-xl text-xs font-mono text-emerald-600 dark:text-emerald-400 break-all select-all">
+                    {{ route('cek.antrean', $activeModalQueue->token) }}
+                </div>
+
+                <div class="mt-6 flex gap-3">
+                    {{-- Tombol manual kalau mau ditutup lebih cepat --}}
+                    <button wire:click="closeModal" 
+                            class="w-full bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 font-bold py-3 px-6 rounded-2xl transition text-sm">
+                        Tutup Sekarang
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    @endif
 </x-filament-panels::page>
