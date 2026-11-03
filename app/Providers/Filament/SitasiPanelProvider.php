@@ -34,6 +34,7 @@ class SitasiPanelProvider extends PanelProvider
             ->login()
             ->brandName('Sitasi Bps Sampang')
             ->sidebarFullyCollapsibleOnDesktop()
+            ->sidebarWidth('18rem')
             ->colors(['primary' => Color::Orange])
             ->renderHook( // render jadwal petugas hari ini
                 PanelsRenderHook::SIDEBAR_NAV_END,
