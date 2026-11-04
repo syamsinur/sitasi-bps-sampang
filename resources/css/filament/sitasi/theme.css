@@ -1,3 +1,23 @@
 @import "../../../../vendor/filament/filament/resources/css/theme.css";
 
 @config 'tailwind.config.js';
+
+.fi-logo-light,
+.fi-logo-dark {
+    height: 2rem;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.fi-logo-dark {
+    display: none;
+}
+
+.dark .fi-logo-light {
+    display: none;
+}
+
+.dark .fi-logo-dark {
+    display: block;
+}
