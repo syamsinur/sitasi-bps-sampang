@@ -1,23 +1,22 @@
 <x-filament-panels::page>
-    {{-- push style custom --}}
-    @push('styles')
-        @vite('resources/css/app.css')
-    @endpush
     <div wire:poll.3s="checkForNewQueue" class="space-y-2">
         {{-- Informasi pembaruan --}}
-            <div class="inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-3 text-xs font-medium text-green-700 dark:border-green-900 dark:bg-green-950 dark:text-green-400">
-                <span class="relative flex h-2 w-2">
-                    <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-                    <span class="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
-                </span>
-                Pembaruan otomatis
-            </div>
+        <div
+            class="inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-3 text-xs font-medium text-green-700 dark:border-green-900 dark:bg-green-950 dark:text-green-400">
+            <span class="relative flex h-2 w-2">
+                <span
+                    class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+                <span class="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
+            </span>
+            Pembaruan otomatis
+        </div>
 
         {{-- Kartu Antrean: Kiri dan Kanan --}}
-        <div class="flex flex-wrap gap-4">
+        <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
 
             {{-- PST: KIRI --}}
-            <div class="w-1/2 flex-1 relative overflow-hidden rounded-2xl border-2 border-emerald-500 bg-white shadow-lg dark:border-emerald-400 dark:bg-gray-900">
+            <div
+                class="relative min-w-0 overflow-hidden rounded-2xl border-2 border-emerald-500 bg-white shadow-lg dark:border-emerald-400 dark:bg-gray-900">
 
                 <div class="h-3 bg-emerald-500"></div>
 
@@ -25,7 +24,8 @@
 
                     {{-- Header PST --}}
                     <div class="flex flex-col items-center gap-3 text-center sm:flex-row sm:text-left">
-                        <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-200 sm:h-16 sm:w-16">
+                        <div
+                            class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-200 sm:h-16 sm:w-16">
                             <x-heroicon-o-building-office-2 class="h-8 w-8 sm:h-9 sm:w-9" />
                         </div>
 
@@ -40,13 +40,16 @@
                     </div>
 
                     {{-- Nomor Antrean PST --}}
-                    <div class="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-2 py-8 text-center dark:border-emerald-800 dark:bg-emerald-950 sm:mt-8 sm:px-4 sm:py-10 lg:py-14">
+                    <div
+                        class="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-2 py-8 text-center dark:border-emerald-800 dark:bg-emerald-950 sm:mt-8 sm:px-4 sm:py-10 lg:py-14">
 
-                        <p class="text-sm font-extrabold uppercase tracking-widest text-emerald-800 dark:text-emerald-200 sm:text-base lg:text-lg">
+                        <p
+                            class="text-sm font-extrabold uppercase tracking-widest text-emerald-800 dark:text-emerald-200 sm:text-base lg:text-lg">
                             NOMOR ANTREAN
                         </p>
 
-                        <p class="mt-4 wrap-break-words text-4xl font-black leading-tight tracking-tight text-emerald-700 sm:text-5xl lg:text-6xl xl:text-7xl dark:text-emerald-300">
+                        <p
+                            class="mt-4 break-words text-4xl font-black leading-tight tracking-tight text-emerald-700 sm:text-5xl lg:text-6xl xl:text-7xl dark:text-emerald-300">
                             {{ $pst['nomor'] }}
                         </p>
 
@@ -54,10 +57,12 @@
                     </div>
 
                     {{-- Total Tamu PST --}}
-                    <div class="mt-6 flex flex-col items-center justify-between gap-3 border-t-2 border-gray-100 pt-5 dark:border-gray-700 sm:flex-row">
+                    <div
+                        class="mt-6 flex flex-col items-center justify-between gap-3 border-t-2 border-gray-100 pt-5 dark:border-gray-700 sm:flex-row">
 
                         <div class="flex items-center gap-3">
-                            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-200">
+                            <div
+                                class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-200">
                                 <x-heroicon-o-users class="h-6 w-6" />
                             </div>
 
@@ -84,7 +89,8 @@
             </div>
 
             {{-- NON PST: KANAN --}}
-            <div class="w-1/2 flex-1 relative overflow-hidden rounded-2xl border-2 border-blue-500 bg-white shadow-lg dark:border-blue-400 dark:bg-gray-900">
+            <div
+                class="relative min-w-0 overflow-hidden rounded-2xl border-2 border-emerald-500 bg-white shadow-lg dark:border-emerald-400 dark:bg-gray-900">
 
                 <div class="h-3 bg-blue-600"></div>
 
@@ -92,7 +98,8 @@
 
                     {{-- Header Non PST --}}
                     <div class="flex flex-col items-center gap-3 text-center sm:flex-row sm:text-left">
-                        <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200 sm:h-16 sm:w-16">
+                        <div
+                            class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200 sm:h-16 sm:w-16">
                             <x-heroicon-o-user-group class="h-8 w-8 sm:h-9 sm:w-9" />
                         </div>
 
@@ -107,13 +114,16 @@
                     </div>
 
                     {{-- Nomor Antrean Non PST --}}
-                    <div class="mt-6 rounded-2xl border border-blue-200 bg-blue-50 px-2 py-8 text-center dark:border-blue-800 dark:bg-blue-950 sm:mt-8 sm:px-4 sm:py-10 lg:py-14">
+                    <div
+                        class="mt-6 rounded-2xl border border-blue-200 bg-blue-50 px-2 py-8 text-center dark:border-blue-800 dark:bg-blue-950 sm:mt-8 sm:px-4 sm:py-10 lg:py-14">
 
-                        <p class="text-sm font-extrabold uppercase tracking-widest text-blue-800 dark:text-blue-200 sm:text-base lg:text-lg">
+                        <p
+                            class="text-sm font-extrabold uppercase tracking-widest text-blue-800 dark:text-blue-200 sm:text-base lg:text-lg">
                             NOMOR ANTREAN
                         </p>
 
-                        <p class="mt-4 wrap-break-words text-4xl font-black leading-tight tracking-tight text-blue-700 sm:text-5xl lg:text-6xl xl:text-7xl dark:text-blue-300">
+                        <p
+                            class="mt-4 wrap-break-words text-4xl font-black leading-tight tracking-tight text-blue-700 sm:text-5xl lg:text-6xl xl:text-7xl dark:text-blue-300">
                             {{ $nonPst['nomor'] }}
                         </p>
 
@@ -121,10 +131,12 @@
                     </div>
 
                     {{-- Total Tamu Non PST --}}
-                    <div class="mt-6 flex flex-col items-center justify-between gap-3 border-t-2 border-gray-100 pt-5 dark:border-gray-700 sm:flex-row">
+                    <div
+                        class="mt-6 flex flex-col items-center justify-between gap-3 border-t-2 border-gray-100 pt-5 dark:border-gray-700 sm:flex-row">
 
                         <div class="flex items-center gap-3">
-                            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-200">
+                            <div
+                                class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-200">
                                 <x-heroicon-o-users class="h-6 w-6" />
                             </div>
 
@@ -154,58 +166,77 @@
     </div>
 
     {{-- petugas hari ini --}}
-    @if(isset($petugasHariIni) && $petugasHariIni)
-            <div class=" absolute top-35 right-8 flex items-center gap-3 bg-white dark:bg-gray-900 px-4 py-2.5 rounded-2xl shadow-sm border border-orange-200! dark:border-gray-800 animate-pulse">
-                <div class="w-15 h-15 rounded-xl overflow-hidden shadow-sm border border-orange-300 dark:border-gray-700 shrink-0">
-                    <img src="{{ asset('storage/' . $petugasHariIni->foto) }}" 
-                         alt="{{ $petugasHariIni->name }}" 
-                         class="w-full h-full object-cover">
-                </div>
-                <div>
-                    <p class="text-[10px] font-extrabold uppercase tracking-wider text-orange-600 dark:text-orange-400">
-                        Petugas Hari Ini ({{ $namaHariIni }})
-                    </p>
-                    <p class="text-xs font-bold text-gray-900 dark:text-white">
-                        {{ $petugasHariIni->name }}
-                    </p>
-                </div>
+    @if (isset($petugasHariIni) && $petugasHariIni)
+        <div
+            class=" absolute top-32 right-8 flex items-center gap-3 bg-white dark:bg-gray-900 px-4 py-2.5 rounded-2xl shadow-sm border !border-orange-200 dark:border-gray-800 animate-pulse">
+            <div
+                class="w-12 h-12 rounded-xl overflow-hidden shadow-sm border border-orange-300 dark:border-gray-700 shrink-0">
+                <img src="{{ asset('storage/' . $petugasHariIni->foto) }}" alt="{{ $petugasHariIni->name }}"
+                    class="w-full h-full object-cover">
             </div>
-        @endif
+            <div>
+                <p class="text-[10px] font-extrabold uppercase tracking-wider text-orange-600 dark:text-orange-400">
+                    Petugas Hari Ini ({{ $namaHariIni }})
+                </p>
+                <p class="text-xs font-bold text-gray-900 dark:text-white">
+                    {{ $petugasHariIni->name }}
+                </p>
+            </div>
+        </div>
+    @endif
 
-    {{-- modal qr code --}}
-    @if($showModal && $activeModalQueue)
-        <div x-data="{ 
-                timer: 300, 
-                interval: null,
-                init() {
-                    // Menghitung mundur 
-                    this.interval = setInterval(() => {
-                        if (this.timer > 0) {
-                            this.timer--;
-                        } else {
-                            clearInterval(this.interval);
-                            // call function close modal
-                            @this.call('closeModal');
-                        }
-                    }, 1000);
-                },
-                destroy() {
-                    clearInterval(this.interval);
+
+    {{-- Modal QR Code --}}
+    @if ($showModal && $activeModalQueue)
+        <div wire:key="queue-modal-{{ $activeModalQueue->id }}" x-data="{
+            timer: 300,
+            interval: null,
+            endTime: null,
+        
+            init() {
+                this.endTime = Date.now() + (300 * 1000);
+        
+                this.updateTimer();
+        
+                this.interval = setInterval(() => {
+                    this.updateTimer();
+                }, 250);
+            },
+        
+            updateTimer() {
+                const remaining = Math.max(
+                    0,
+                    Math.ceil((this.endTime - Date.now()) / 1000)
+                );
+        
+                this.timer = remaining;
+        
+                if (remaining <= 0) {
+                    this.destroy();
+                    $wire.closeModal();
                 }
-            }" 
-            x-init="init()"
+            },
+        
+            destroy() {
+                if (this.interval) {
+                    clearInterval(this.interval);
+                    this.interval = null;
+                }
+            }
+        }" x-init="init()"
             class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-            
-            <div class="bg-white dark:bg-gray-900 rounded-3xl p-8 max-w-lg w-full shadow-2xl text-center border border-gray-200 dark:border-gray-800">
-                
+            <div
+                class="bg-white dark:bg-gray-900 rounded-3xl p-8 max-w-lg w-full shadow-2xl text-center border border-gray-200 dark:border-gray-800">
+
                 <div class="flex justify-between items-center mb-2">
-                    <span class="bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-xs font-extrabold px-3.5 py-1.5 rounded-full tracking-wider">
+                    <span
+                        class="bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-xs font-extrabold px-3.5 py-1.5 rounded-full tracking-wider">
                         Antrean Baru Terdaftar!
                     </span>
-                    
-                    {{-- Indikator Timer Hitung Mundur --}}
+
                     <span class="text-xs font-bold text-gray-400 bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full">
-                        Tutup otomatis dalam <span x-text="timer" class="text-emerald-600 font-black"></span>s
+                        Tutup otomatis dalam
+                        <span x-text="timer" class="text-emerald-600 font-black"></span>s
                     </span>
                 </div>
 
@@ -214,26 +245,29 @@
                 </h2>
 
                 <p class="mt-1 text-lg font-bold text-gray-700 dark:text-gray-200">
-                    {{ $activeModalQueue->name }} <span class="text-sm font-normal text-gray-500">({{ $activeModalQueue->instansi }})</span>
+                    {{ $activeModalQueue->name }}
+                    <span class="text-sm font-normal text-gray-500">
+                        ({{ $activeModalQueue->instansi }})
+                    </span>
                 </p>
 
-                <p class="text-xs text-gray-500 mt-2">Silakan scan QR code di bawah ini menggunakan HP untuk memantau antrean secara real-time:</p>
+                <p class="text-xs text-gray-500 mt-2">
+                    Silakan scan QR code di bawah ini menggunakan HP untuk memantau antrean secara real-time:
+                </p>
 
-                {{-- QR Code API --}}
                 <div class="mt-4 inline-block bg-white p-4 rounded-2xl border shadow-md">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=170x170&data={{ route('cek.antrean', $activeModalQueue->token) }}" 
-                        alt="QR Code Antrean" 
-                        class="rounded mx-auto">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=170x170&data={{ route('cek.antrean', $activeModalQueue->token) }}"
+                        alt="QR Code Antrean" class="rounded mx-auto">
                 </div>
 
-                <div class="mt-3 bg-gray-50 dark:bg-gray-800 p-2.5 rounded-xl text-xs font-mono text-emerald-600 dark:text-emerald-400 break-all select-all">
+                <div
+                    class="mt-3 bg-gray-50 dark:bg-gray-800 p-2.5 rounded-xl text-xs font-mono text-emerald-600 dark:text-emerald-400 break-all select-all">
                     {{ route('cek.antrean', $activeModalQueue->token) }}
                 </div>
 
                 <div class="mt-6 flex gap-3">
-                    {{-- button close manual --}}
-                    <button wire:click="closeModal" 
-                            class="w-full bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 font-bold py-3 px-6 rounded-2xl transition text-sm">
+                    <button wire:click="closeModal"
+                        class="w-full bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 font-bold py-3 px-6 rounded-2xl transition text-sm">
                         Tutup Sekarang
                     </button>
                 </div>

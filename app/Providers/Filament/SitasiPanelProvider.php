@@ -30,6 +30,7 @@ class SitasiPanelProvider extends PanelProvider
             ->default()
             ->id('sitasi')
             ->path('/')
+            ->viteTheme('resources/css/filament/sitasi/theme.css')
             ->databaseNotifications()
             ->login()
             ->brandLogo(fn() => view('filament.widgets.brand'))
@@ -39,7 +40,7 @@ class SitasiPanelProvider extends PanelProvider
             ->colors(['primary' => Color::Orange])
             ->renderHook( // render jadwal petugas hari ini
                 PanelsRenderHook::SIDEBAR_NAV_END,
-                fn (): string => view('filament.widgets.sidebar-petugas')->render()
+                fn(): string => view('filament.widgets.sidebar-petugas')->render()
             )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')

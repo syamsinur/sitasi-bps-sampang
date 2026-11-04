@@ -28,6 +28,7 @@ class PstOfficerResource extends Resource
 
     // model label
     protected static ?string $modelLabel = 'Petugas PST';
+    protected static ?string $pluralModelLabel = 'Petugas PST';
 
     // icon
     protected static ?string $navigationIcon = 'heroicon-o-user';
@@ -58,8 +59,7 @@ class PstOfficerResource extends Resource
                 Select::make('work_team_id')
                     ->label('Work Team')
                     ->relationship('work_team', 'name')
-                    ->required()
-                    ,
+                    ->required(),
                 TextInput::make('nomor_hp')
                     ->label('Nomor HP')
                     ->numeric()
@@ -121,7 +121,7 @@ class PstOfficerResource extends Resource
                             ->alignment('center'),
                     ])
                 ]),
-                
+
             ])
             ->filters([
                 //

@@ -14,6 +14,7 @@ class GuestQueueResource extends Resource
 
     // model label
     protected static ?string $modelLabel = 'Antrean';
+    protected static ?string $pluralModelLabel = 'Antrean';
 
     // icon
     protected static ?string $navigationIcon = 'heroicon-o-queue-list';

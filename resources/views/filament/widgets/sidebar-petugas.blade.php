@@ -1,7 +1,4 @@
- @push('styles')
-    @vite('resources/css/app.css')
-@endpush
-<div class="mx-3 mt-6 p-4 bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-orange-200! dark:border-gray-800 text-center flex flex-col items-center justify-between">
+<div class="mx-3 mt-6 p-4 bg-white dark:bg-gray-900 rounded-2xl shadow-sm !border border-orange-200 dark:border-gray-800 text-center flex flex-col items-center justify-between">
     <p class="text-[11px] font-extrabold uppercase tracking-wider text-orange-600 dark:text-orange-400 mb-3">
         Petugas Hari Ini ({{ $namaHariIni }})
     </p>

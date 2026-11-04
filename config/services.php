@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'whatsapp' => [
+        'url'             => env('WHATSAPP_GATEWAY_URL'),
+        'token'           => env('WHATSAPP_GATEWAY_TOKEN'),
+        'timeout'         => (int) env('WHATSAPP_GATEWAY_TIMEOUT', 15),
+        'retry_attempts'  => (int) env('WHATSAPP_GATEWAY_RETRY_ATTEMPTS', 2),
+    ],
+
 ];

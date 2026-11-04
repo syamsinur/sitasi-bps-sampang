@@ -7,6 +7,7 @@ use App\Models\PstOfficer;
 use App\Observers\GuestBookObserver;
 use App\Observers\PstOfficerObserver;
 use Carbon\Carbon;
+
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,8 +28,12 @@ class AppServiceProvider extends ServiceProvider
     {
         PstOfficer::observe(PstOfficerObserver::class);
         GuestBook::observe(GuestBookObserver::class);
+
         // View sidebar Filament
-        View::composer('*', function ($view) {
+        View::composer([
+            'filament.widgets.sidebar-petugas',
+            'filament.pages.guest-queue',
+        ], function ($view) {
             // Logic jadwal harian
             $petugasPst = PstOfficer::orderBy('no_urut', 'asc')->orderBy('id', 'asc')->get();
             $totalPetugas = $petugasPst->count();

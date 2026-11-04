@@ -1,8 +1,5 @@
 <x-filament-panels::page>
-    {{-- push style custom --}}
-    @push('styles')
-        @vite('resources/css/app.css')
-    @endpush
+    {{-- Catatan: app.css tidak perlu di-load ulang di sini karena Filament sudah memiliki theme.css sendiri --}}
 
     {{-- title --}}
     <div class="space-y-4 w-full">
@@ -10,7 +7,7 @@
         {{-- schedule day --}}
         <div class="flex flex-wrap gap-4 justify-center">
             @foreach($schedulePetugas as $item)
-                <div class="w-40 p-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm border-2! border-orange-400! border-l-8! dark:border-primary-600! text-center flex flex-col items-center justify-between">
+                <div class="w-40 p-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm !border-2 !border-orange-400 !border-l-8 dark:!border-primary-600 text-center flex flex-col items-center justify-between">
                     <div>
                         <span class="text-sm font-bold uppercase tracking-wider text-primary-400 dark:text-primary-600">
                             {{ $item['hari'] }}
@@ -37,7 +34,7 @@
                     </div>
 
                     <div class="text-xs text-gray-400">
-                        {{ $item['petugas']->nomor_hp }}
+                        {{ $item['petugas']->nomor_hp ?? '-' }}
                     </div>
                 </div>
             @endforeach
@@ -74,14 +71,14 @@
                                 <td class="px-4 py-3 text-center space-x-1">
                                     {{-- Tombol Geser ke Atas --}}
                                     <button wire:click="moveOfficer({{ $petugas->id }}, 'up')" 
-                                            class="px-2.5 py-1 bg-gray-100 hover:bg-green-500! text-gray-700 hover:text-white! rounded-lg text-xs font-bold transition dark:bg-gray-500 dark:text-gray-300 dark:hover:bg-gray-700"
+                                            class="px-2.5 py-1 bg-gray-100 hover:!bg-green-500 text-gray-700 hover:!text-white rounded-lg text-xs font-bold transition dark:bg-gray-500 dark:text-gray-300 dark:hover:bg-gray-700"
                                             title="Geser ke Atas">
                                         &uarr; Naik
                                     </button>
                                     
                                     {{-- Tombol Geser ke Bawah --}}
                                     <button wire:click="moveOfficer({{ $petugas->id }}, 'down')" 
-                                            class="px-2.5 py-1 bg-gray-100 hover:bg-red-500! text-gray-700 hover:text-white! rounded-lg text-xs font-bold transition dark:bg-gray-500 dark:text-gray-300 dark:hover:bg-gray-700"
+                                            class="px-2.5 py-1 bg-gray-100 hover:!bg-red-500 text-gray-700 hover:!text-white rounded-lg text-xs font-bold transition dark:bg-gray-500 dark:text-gray-300 dark:hover:bg-gray-700"
                                             title="Geser ke Bawah">
                                         &darr; Turun
                                     </button>

@@ -29,6 +29,7 @@ class WorkTeamResource extends Resource
 
     // model label
     protected static ?string $modelLabel = 'Tim Kerja';
+    protected static ?string $pluralModelLabel = 'Tim Kerja';
 
     // icon
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
@@ -67,8 +68,8 @@ class WorkTeamResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()
-                        ->color('info')
-                        ->label('Detail'),
+                    ->color('info')
+                    ->label('Detail'),
                 Tables\Actions\EditAction::make(),
                 // Tables\Actions\DeleteAction::make(),
             ])
@@ -102,7 +103,7 @@ class WorkTeamResource extends Resource
                             ->placeholder('Belum ada data')
                             ->hiddenLabel()
                     ])
-                ]);
+            ]);
     }
     public static function getRelations(): array
     {

@@ -30,6 +30,7 @@ class GuestBookResource extends Resource
 
     // model label
     protected static ?string $modelLabel = 'Buku Tamu';
+    protected static ?string $pluralModelLabel = 'Buku Tamu';
 
     // icon
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
@@ -55,7 +56,7 @@ class GuestBookResource extends Resource
                 TextInput::make('instansi')
                     ->label('Instansi')
                     ->required(),
-                 Select::make('keperluan')
+                Select::make('keperluan')
                     ->label('Keperluan')
                     ->options([
                         'PST' => 'PST',
@@ -87,15 +88,17 @@ class GuestBookResource extends Resource
                     })
                     ->live()
                     ->required()
-                    ->hidden(fn (Get $get): bool => ! $get('keperluan')),
+                    ->hidden(fn(Get $get): bool => ! $get('keperluan')),
                 TextInput::make('keperluan_lainnya')
                     ->label('Rincian Keperluan Lainnya')
-                    ->visible(fn (Get $get): bool =>
+                    ->visible(
+                        fn(Get $get): bool =>
                         $get('detail_keperluan') === 'Lainnya'
                     )
-                    ->required(fn (Get $get): bool =>
+                    ->required(
+                        fn(Get $get): bool =>
                         $get('detail_keperluan') === 'Lainnya'
-                        ),
+                    ),
                 TextInput::make('no_hp')
                     ->label('No HP')
                     ->numeric()
@@ -138,7 +141,7 @@ class GuestBookResource extends Resource
                 TextColumn::make('detail_keperluan')
                     ->label('Detail Keperluan')
                     ->getStateUsing(function (GuestBook $record) {
-                        if($record->detail_keperluan === 'Lainnya') {
+                        if ($record->detail_keperluan === 'Lainnya') {
                             return $record->keperluan_lainnya ?? 'Lainnya';
                         }
                         return $record->detail_keperluan;
@@ -162,7 +165,7 @@ class GuestBookResource extends Resource
                 TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'Menunggu' => 'gray',
                         'Diproses' => 'warning',
                         'Selesai' => 'success'
@@ -209,5 +212,4 @@ class GuestBookResource extends Resource
             'edit' => Pages\EditGuestBook::route('/{record}/edit'),
         ];
     }
-
 }

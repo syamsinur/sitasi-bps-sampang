@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('keperluan');
             $table->string('detail_keperluan');
             $table->string('keperluan_lainnya')->nullable();
-            $table->string('no_hp');
+            $table->string('no_hp')->nullable();
             $table->string('petugas')->nullable();
             $table->string('status');
             $table->timestamps();
