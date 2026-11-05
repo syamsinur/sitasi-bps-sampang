@@ -19,7 +19,7 @@ class MonthlyChart extends ChartWidget
     // function get data
     protected function getData(): array
     {
-        $tahunIni = now()->year;
+        $thisYear = now()->year;
 
         // Array daftar bulan dalam setahun
         $bulanList = [
@@ -37,24 +37,25 @@ class MonthlyChart extends ChartWidget
             '12' => 'Desember',
         ];
 
+        // get data
+        $allData = GuestBook::query()
+            ->selectRaw('MONTH(created_at) as bulan, keperluan, count(*) as total')
+            ->whereYear('created_at', $thisYear)
+            ->whereIn('keperluan', ['PST', 'NON PST'])
+            ->groupBy('bulan', 'keperluan')
+            ->get()
+            ->groupBy('bulan');
+
         $dataPst = [];
         $dataNonPst = [];
 
-        // Loop per bulan untuk mengambil total layanan PST dan Non PST berdasarkan created_at
+        // Loop per bulan 
         foreach ($bulanList as $angkaBulan => $namaBulan) {
-            // Hitung total PST per bulan pada tahun berjalan
-            $dataPst[] = GuestBook::query()
-                ->where('keperluan', 'PST')
-                ->whereYear('created_at', $tahunIni)
-                ->whereMonth('created_at', $angkaBulan)
-                ->count();
-
-            // Hitung total NON PST per bulan pada tahun berjalan
-            $dataNonPst[] = GuestBook::query()
-                ->where('keperluan', 'NON PST')
-                ->whereYear('created_at', $tahunIni)
-                ->whereMonth('created_at', $angkaBulan)
-                ->count();
+            // parsing data to int (01, 02) to (1, 2)
+            $bulanInt = (int) $angkaBulan;
+            
+            $dataPst[] = $allData->get($bulanInt)?->firstWhere('keperluan', 'PST')?->total ?? 0;
+            $dataNonPst[] = $allData->get($bulanInt)?->firstWhere('keperluan', 'NON PST')?->total ?? 0;
         }
 
         // return data

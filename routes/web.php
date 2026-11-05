@@ -4,21 +4,6 @@ use App\Models\GuestBook;
 use App\Models\WaitingList;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-// Route::get('/antrean/{waiting_list:token}', function (WaitingList $waiting_list) {
-//     $antrean = $waiting_list->token;
-//     if(!$antrean) {
-//         $antrean = GuestBook::where('token', $waiting_list->token)->firstOrFail();
-//     }
-
-
-//     return view('front.antrean-status', [
-//         'antrean' => $waiting_list
-//     ]);
-// });
 
 Route::get('/antrean/{token}', function ($token) {
     // 1. Cari dulu di Ruang Tamu (Waiting List) yang masih aktif/proses

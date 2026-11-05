@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Widgets\PstChart;
 use App\Filament\Widgets\PstOfficerChart;
+use App\Filament\Widgets\MonthlyChart;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -52,7 +53,8 @@ class SitasiPanelProvider extends PanelProvider
                 // Widgets\AccountWidget::class,
                 // Widgets\FilamentInfoWidget::class,
                 PstChart::class,
-                PstOfficerChart::class
+                PstOfficerChart::class,
+                MonthlyChart::class
             ])
             ->middleware([
                 EncryptCookies::class,

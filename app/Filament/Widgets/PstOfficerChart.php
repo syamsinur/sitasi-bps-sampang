@@ -43,18 +43,15 @@ class PstOfficerChart extends ChartWidget
 
         // get data
         $query = GuestBook::query()
-            ->select('petugas', DB::raw('count(*) as total'))
+            ->selectRaw('petugas, count(*) as total')
             ->whereNotNull('petugas')
-            ->where('petugas', '!=', '');
+            ->where('petugas', '!=', '')
+            ->whereYear('created_at', now()->year);
             
         // filter except all
         if ($activeFilter && $activeFilter !== 'all') {
-            $query->whereMonth('created_at', $activeFilter)
-                  ->whereYear('created_at', now()->year);
-        } else {
-            // Batasi tahun berjalan agar data tidak bercampur dengan tahun-tahun lalu
-            $query->whereYear('created_at', now()->year);
-        }
+            $query->whereMonth('created_at', $activeFilter);
+        } 
 
         $performa = $query->groupBy('petugas')->pluck('total', 'petugas');
 

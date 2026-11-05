@@ -17,8 +17,14 @@ class PstChart extends ChartWidget
     protected function getData(): array
     {
         // get data
-        $layananPst = GuestBook::where('keperluan', 'PST')->count();
-        $layananNonPst = GuestBook::where('keperluan', 'NON PST')->count();
+        $allData = GuestBook::query()
+            ->whereIn('keperluan', ['PST', 'NON PST'])
+            ->selectRaw('keperluan, count(*) as total')
+            ->groupBy('keperluan')
+            ->pluck('total', 'keperluan');
+
+        $layananPst = $allData['PST'] ?? 0;
+        $layananNonPst = $allData['NON PST'] ?? 0;
 
         // return data
         return [
