@@ -31,8 +31,8 @@ class WaitingList extends Model
             $awalBulan = now()->startOfMonth();
             $awalBulanDepan = now()->addMonthNoOverflow()->startOfMonth();
 
-            // Cari nomor antrean terbesar pada bulan ini
-            $nomorTerakhir = static::query()
+            // 1. Ambil nomor terbesar dari waiting_lists bulan ini
+            $maxWaiting = static::query()
                 ->where('keperluan', $waitingList->keperluan)
                 ->whereBetween('created_at', [$awalBulan, $awalBulanDepan])
                 ->pluck('nomor_antrean')
@@ -44,8 +44,24 @@ class WaitingList extends Model
                 })
                 ->max() ?? 0;
 
-            // Otomatis isi kolom nomor_antrean dengan format TP-001 / TN-001 berikutnya
-            $waitingList->nomor_antrean = sprintf('%s-%03d', $prefix, $nomorTerakhir + 1);
+            // 2. Ambil nomor terbesar dari guest_books bulan ini
+            $maxGuestBook = GuestBook::query()
+                ->where('keperluan', $waitingList->keperluan)
+                ->whereBetween('created_at', [$awalBulan, $awalBulanDepan])
+                ->pluck('nomor_antrean')
+                ->map(function ($nomor) use ($prefix) {
+                    if (!is_string($nomor) || !preg_match('/^' . preg_quote($prefix, '/') . '-(\d+)$/', $nomor, $matches)) {
+                        return 0;
+                    }
+                    return (int) $matches[1];
+                })
+                ->max() ?? 0;
+
+                // Ambil nilai paling tinggi dari kedua tabel di bulan ini
+                $nomorTerakhir = max($maxWaiting, $maxGuestBook);
+
+                // Otomatis isi kolom nomor_antrean berikutnya
+                $waitingList->nomor_antrean = sprintf('%s-%03d', $prefix, $nomorTerakhir + 1);
         });
     }
 }

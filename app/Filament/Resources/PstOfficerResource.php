@@ -64,6 +64,13 @@ class PstOfficerResource extends Resource
                     ->label('Nomor HP')
                     ->numeric()
                     ->required(),
+                Select::make('jenis')
+                    ->label('Jenis')
+                    ->options([
+                        'pst' => 'pst',
+                        'non pst' => 'non pst'
+                    ])
+                    ->required(),
                 FileUpload::make('foto')
                     ->label('Upload Foto')
                     ->disk('public')
@@ -110,9 +117,9 @@ class PstOfficerResource extends Resource
                     ]),
 
                     Stack::make([
-                        TextColumn::make('keahlian')
-                            ->label('Keahlian')
-                            ->size(TextColumnSize::ExtraSmall)
+                        TextColumn::make('jenis')
+                            ->label('Jenis')
+                            ->size(TextColumnSize::Small)
                             ->color('success')
                             ->badge()
                             ->alignment('center'),

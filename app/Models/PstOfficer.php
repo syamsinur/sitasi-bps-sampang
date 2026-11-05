@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['no_urut', 'name', 'nip', 'work_team_id', 'nomor_hp', 'foto'])]
+#[Fillable(['no_urut', 'name', 'nip', 'work_team_id', 'nomor_hp', 'jenis', 'foto'])]
 class PstOfficer extends Model
 {
     protected static function booted()

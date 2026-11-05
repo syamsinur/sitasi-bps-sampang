@@ -41,7 +41,8 @@ class PstSchedule extends Page
         // ==========================================================
 
         // retrieve data
-        $petugasPst = PstOfficer::orderBy('no_urut', 'asc')->orderBy('id', 'asc')->get();
+        $petugasAll = PstOfficer::orderBy('no_urut', 'asc')->orderBy('id', 'asc')->get();
+        $petugasPst = $petugasAll->where('jenis', 'pst');
         
         // total petugas
         $totalPetugas = $petugasPst->count();
@@ -69,6 +70,7 @@ class PstSchedule extends Page
         return [
             'schedulePetugas' => $schedulePetugas,
             'petugasPst' => $petugasPst,
+            'petugasAll' => $petugasAll,
             'totalPetugas' => $totalPetugas
         ];
     }

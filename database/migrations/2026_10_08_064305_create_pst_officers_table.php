@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('nip');
             $table->foreignId('work_team_id')->constrained()->cascadeOnDelete();
             $table->string('nomor_hp');
+            $table->string('jenis');
             $table->string('foto')->nullable();
             $table->timestamps();
         });

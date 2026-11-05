@@ -15,6 +15,8 @@ class GuestBookExporter extends Exporter
     public static function getColumns(): array
     {
         return [
+            ExportColumn::make('nomor_antrean')
+                ->label('Nomor Antrean'),
             ExportColumn::make('name')
                 ->label('Nama'),
             ExportColumn::make('instansi')

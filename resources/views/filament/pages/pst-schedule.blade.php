@@ -58,15 +58,17 @@
                         <tr>
                             <th class="px-4 py-3">Urutan</th>
                             <th class="px-4 py-3">Nama Petugas</th>
+                            <th class="px-4 py-3">Jenis</th>
                             <th class="px-4 py-3">Kontak / Keterangan</th>
                             <th class="px-4 py-3 text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($petugasPst as $index => $petugas)
+                        @forelse($petugasAll as $index => $petugas)
                             <tr class="border-b dark:border-gray-800">
                                 <td class="px-4 py-3 font-bold text-gray-700 dark:text-gray-300">{{ $index + 1 }}</td>
                                 <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">{{ $petugas->name }}</td>
+                                <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">{{ $petugas->jenis }}</td>
                                 <td class="px-4 py-3">{{ $petugas->nomor_hp ?? '-' }}</td>
                                 <td class="px-4 py-3 text-center space-x-1">
                                     {{-- Tombol Geser ke Atas --}}
