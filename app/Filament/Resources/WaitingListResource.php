@@ -227,14 +227,14 @@ class WaitingListResource extends Resource
                             ? ($record->keperluan_lainnya ?? 'Lainnya')
                             : $record->detail_keperluan;
 
-                        $pesan = "Assalamualaikum, {$record->petugas}. 🙏\n\n"
+                        $pesan = "Assalamualaikum, Bapak/Ibu {$record->petugas}. 🙏\n\n"
                             . "Ada tamu yang sedang menunggu pelayanan Anda di PST BPS Sampang:\n\n"
                             . "👤 Nama           : {$record->name}\n"
                             . "🏢 Instansi        : {$record->instansi}\n"
                             . "📋 Keperluan       : {$record->keperluan} - {$detail}\n"
                             . "🎫 Nomor Antrean   : {$record->nomor_antrean}\n\n"
                             . "Mohon segera berikan pelayanan terbaik. Terima kasih! 😊\n\n"
-                            . "— Sistem PST BPS Kabupaten Sampang";
+                            . "&copy POJUR (Pelayanan Optimal, Jujur, Unggul, dan Responsif) - BPS Kab. Sampang";
 
                         return [
                             'nomor_hp_petugas' => $nomorHp,
@@ -264,14 +264,14 @@ class WaitingListResource extends Resource
                             ? ($record->keperluan_lainnya ?? 'Lainnya')
                             : $record->detail_keperluan;
 
-                        $pesan = "Assalamualaikum, {$record->petugas}. 🙏\n\n"
+                        $pesan = "Assalamualaikum, Bapak/Ibu {$record->petugas}. 🙏\n\n"
                             . "Ada tamu yang sedang menunggu pelayanan Anda di PST BPS Sampang:\n\n"
                             . "👤 Nama           : {$record->name}\n"
                             . "🏢 Instansi        : {$record->instansi}\n"
                             . "📋 Keperluan       : {$record->keperluan} - {$detail}\n"
                             . "🎫 Nomor Antrean   : {$record->nomor_antrean}\n\n"
                             . "Mohon segera berikan pelayanan terbaik. Terima kasih! 😊\n\n"
-                            . "— Sistem PST BPS Kabupaten Sampang";
+                            . "© POJUR (Pelayanan Optimal, Jujur, Unggul, dan Responsif) - BPS Kab. Sampang";
 
                         $result = WhatsAppService::send($officer->nomor_hp, $pesan);
 
