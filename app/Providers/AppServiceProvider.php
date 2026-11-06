@@ -35,7 +35,8 @@ class AppServiceProvider extends ServiceProvider
             'filament.pages.guest-queue',
         ], function ($view) {
             // Logic jadwal harian
-            $petugasPst = PstOfficer::orderBy('no_urut', 'asc')->orderBy('id', 'asc')->get();
+            $petugasAll = PstOfficer::orderBy('no_urut', 'asc')->orderBy('id', 'asc')->get();
+            $petugasPst = $petugasAll->where('jenis', 'pst');
             $totalPetugas = $petugasPst->count();
             
             $petugasHariIni = null;
