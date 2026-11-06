@@ -19,14 +19,16 @@
                     <div class="my-4 w-full">
                         @if ($item['petugas'])
                             {{-- Foto --}}
-                            <div class="w-28 h-28 mx-auto rounded-xl overflow-hidden shrink-0">
-                                @if ($item['petugas']->foto && file_exists(public_path('storage/' . $item['petugas']->foto)))
-                                    <img src="{{ asset('storage/' . $item['petugas']->foto) }}"
-                                        alt="{{ $item['petugas']->name }}" class="w-full h-full object-cover">
+                            <div class="w-24 h-24 mx-auto rounded-full overflow-hidden shrink-0 shadow-sm border-2 border-orange-200 dark:border-gray-700 flex items-center justify-center"
+                                style="width: 96px; height: 96px; min-width: 96px; min-height: 96px;">
+                                @if ($item['petugas']->foto_url)
+                                    <img src="{{ $item['petugas']->foto_url }}"
+                                        alt="{{ $item['petugas']->name }}" class="w-full h-full rounded-full object-cover"
+                                        style="width: 96px; height: 96px; object-fit: cover;">
                                 @else
-                                    <div class="w-full h-full bg-gray-300 flex items-center justify-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14 text-gray-500"
-                                            fill="currentColor" viewBox="0 0 24 24">
+                                    <div class="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-400 dark:text-gray-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12"
+                                            fill="currentColor" viewBox="0 0 24 24" style="width: 48px; height: 48px;">
                                             <path
                                                 d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                                         </svg>

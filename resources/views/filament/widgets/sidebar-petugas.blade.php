@@ -6,14 +6,16 @@
 
     @if (isset($petugasHariIni) && $petugasHariIni)
         <div
-            class="w-20 h-20 mt-2 mb-3 rounded-xl overflow-hidden shadow-sm border border-orange-300 dark:border-gray-700">
-            @if ($petugasHariIni->foto && file_exists(public_path('storage/' . $petugasHariIni->foto)))
-                <img src="{{ asset('storage/' . $petugasHariIni->foto) }}" alt="{{ $petugasHariIni->name }}"
-                    class="w-full h-full object-cover">
+            class="w-20 h-20 mt-2 mb-3 rounded-full overflow-hidden shadow-sm border-2 border-orange-300 dark:border-gray-700 shrink-0 flex items-center justify-center"
+            style="width: 80px; height: 80px; min-width: 80px; min-height: 80px;">
+            @if ($petugasHariIni->foto_url)
+                <img src="{{ $petugasHariIni->foto_url }}" alt="{{ $petugasHariIni->name }}"
+                    class="w-full h-full rounded-full object-cover"
+                    style="width: 80px; height: 80px; object-fit: cover;">
             @else
-                <div class="w-full h-full bg-gray-300 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-gray-500" fill="currentColor"
-                        viewBox="0 0 24 24">
+                <div class="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-400 dark:text-gray-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="currentColor"
+                        viewBox="0 0 24 24" style="width: 40px; height: 40px;">
                         <path
                             d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                     </svg>
