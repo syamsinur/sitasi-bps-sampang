@@ -16,7 +16,7 @@ class WhatsAppService
      * @param  string  $source  Label sumber (untuk logging gateway)
      * @return array{success: bool, message: string, message_id: string|null}
      */
-    public static function send(string $phone, string $message, string $source = 'SITASI'): array
+    public static function send(string $phone, string $message, string $source = 'pojur'): array
     {
         $url      = rtrim(config('services.whatsapp.url'), '/');
         $token    = config('services.whatsapp.token');

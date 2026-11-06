@@ -171,8 +171,18 @@
             class=" absolute top-32 right-8 flex items-center gap-3 bg-white dark:bg-gray-900 px-4 py-2.5 rounded-2xl shadow-sm border !border-orange-200 dark:border-gray-800 animate-pulse">
             <div
                 class="w-12 h-12 rounded-xl overflow-hidden shadow-sm border border-orange-300 dark:border-gray-700 shrink-0">
-                <img src="{{ asset('storage/' . $petugasHariIni->foto) }}" alt="{{ $petugasHariIni->name }}"
-                    class="w-full h-full object-cover">
+                @if ($petugasHariIni->foto && file_exists(public_path('storage/' . $petugasHariIni->foto)))
+                    <img src="{{ asset('storage/' . $petugasHariIni->foto) }}" alt="{{ $petugasHariIni->name }}"
+                        class="w-full h-full object-cover">
+                @else
+                    <div class="w-full h-full bg-gray-300 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-gray-500" fill="currentColor"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                        </svg>
+                    </div>
+                @endif
             </div>
             <div>
                 <p class="text-[10px] font-extrabold uppercase tracking-wider text-orange-600 dark:text-orange-400">

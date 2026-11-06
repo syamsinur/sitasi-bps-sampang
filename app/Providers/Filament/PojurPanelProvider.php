@@ -23,15 +23,15 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-class SitasiPanelProvider extends PanelProvider
+class PojurPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
             ->default()
-            ->id('sitasi')
+            ->id('pojur')
             ->path('/')
-            ->viteTheme('resources/css/filament/sitasi/theme.css')
+            ->viteTheme('resources/css/filament/pojur/theme.css')
             ->databaseNotifications()
             ->login()
             ->brandLogo(fn() => view('filament.widgets.brand'))
