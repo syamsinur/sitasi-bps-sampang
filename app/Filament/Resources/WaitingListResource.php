@@ -159,7 +159,10 @@ class WaitingListResource extends Resource
                     ->color('warning')
                     ->visible(fn($record) => $record->status === 'Menunggu')
                     ->action(function ($record) {
-                        $record->update(['status' => 'Diproses']);
+                        $record->update([
+                            'status' => 'Diproses',
+                            'updated_at' => now()
+                            ]);
                         Notification::make()->title('Status diubah menjadi Diproses')->success()->send();
                     })
                     ->requiresConfirmation(),

@@ -20,6 +20,7 @@ class ListGuestQueues extends Page
 
     // Properti untuk melacak antrean terbaru
     public ?int $latestQueueId = null;
+    public ?int $latestProcessedId = null;
     public $activeModalQueue = null;
     public bool $showModal = false;
 
@@ -40,6 +41,23 @@ class ListGuestQueues extends Page
             $this->latestQueueId = $latest->id;
             $this->activeModalQueue = $latest;
             $this->showModal = true; // Munculkan modal otomatis!
+        }
+
+        // 2. Cek tamu terbaru yang statusnya BERUBAH MENJADI 'Diproses'
+        $tamuDiproses = WaitingList::query()
+            ->where('status', 'Diproses')
+            ->latest('updated_at')
+            ->first();
+
+        // Jika ada tamu diproses DAN ID-nya berbeda dari yang terakhir disuarakan
+        if ($tamuDiproses && $tamuDiproses->id !== $this->latestProcessedId) {
+            $this->latestProcessedId = $tamuDiproses->id; // Simpan ID agar tidak berulang
+
+            // Picu suara panggilan ke browser
+            $this->dispatch('putar-suara-antrean', [
+                'nomor'   => $tamuDiproses->nomor_antrean,
+                'petugas' => $tamuDiproses->petugas ?? 'Pelayanan'
+            ]);
         }
     }
 

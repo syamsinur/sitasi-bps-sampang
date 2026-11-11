@@ -275,4 +275,56 @@
             </div>
         </div>
     @endif
+
+    <script>
+    document.addEventListener('livewire:initialized', () => {
+        Livewire.on('putar-suara-antrean', (event) => {
+            const nomor = event.nomor;
+            const petugas = event.petugas;
+
+            const data = Array.isArray(event) ? event[0] : event;
+            
+            let noomrVar = data?.nomor ?? '000';
+            let petugasVar = data?.petugas ?? 'Pelayanan';
+
+            // split huruf dan angka
+            let parts = String(noomrVar).split('-');
+            let huruf = parts[0] ?? ''; 
+            let angka = parts[1] ?? '';
+
+            // 2. Ubah setiap digit angka menjadi kata ejaan Bahasa Indonesia secara literal
+            let angkaSpasi = angka.split('').map(digit => {
+                switch(digit) {
+                    case '0': return 'a null';
+                    case '1': return 'satu';
+                    case '2': return 'dua';
+                    case '3': return 'tiga';
+                    case '4': return 'empat';
+                    case '5': return 'lima';
+                    case '6': return 'enam';
+                    case '7': return 'tujuh';
+                    case '8': return 'delapan';
+                    case '9': return 'sembilan';
+                    default: return digit;
+                }
+            }).join(' ');
+
+        // join again huruf dan angka 
+        let nomorBersih = angkaSpasi ? `${huruf} ${angkaSpasi}` : huruf;
+
+            if ('speechSynthesis' in window) {
+                // Hentikan suara sebelumnya agar tidak tumpang tindih
+                window.speechSynthesis.cancel();
+
+                // Format kalimat panggilan
+                const teksPanggilan = `Nomor antrean ${nomorBersih}, silakan menuju ke meja ${petugasVar}`;
+                const utterance = new SpeechSynthesisUtterance(teksPanggilan);
+                utterance.lang = 'id-ID';
+                utterance.rate = 0.55; // Kecepatan lambat-normal agar jelas
+                
+                window.speechSynthesis.speak(utterance);
+            }
+        });
+    });
+    </script>
 </x-filament-panels::page>
