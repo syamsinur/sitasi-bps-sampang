@@ -36,39 +36,67 @@ class PstOfficerChart extends ChartWidget
     }
 
     // function get data
+
     protected function getData(): array
     {
-        // get filter
         $activeFilter = $this->filter;
 
-        // get data
         $query = GuestBook::query()
-            ->selectRaw('petugas, count(*) as total')
+            ->selectRaw('petugas, keperluan, COUNT(*) as total')
             ->whereNotNull('petugas')
             ->where('petugas', '!=', '')
+            ->whereNotNull('keperluan')
+            ->where('keperluan', '!=', '')
             ->whereYear('created_at', now()->year);
-            
-        // filter except all
+
         if ($activeFilter && $activeFilter !== 'all') {
             $query->whereMonth('created_at', $activeFilter);
-        } 
+        }
 
-        $performa = $query->groupBy('petugas')->pluck('total', 'petugas');
+        $data = $query
+            ->groupBy('petugas', 'keperluan')
+            ->get();
 
-        // return data
+        // Ambil seluruh petugas
+        $petugas = $data->pluck('petugas')->unique()->values();
+
+        // Ambil seluruh jenis layanan
+        $keperluan = $data->pluck('keperluan')->unique()->values();
+
+        // Warna setiap jenis layanan
+        $colors = [
+            '#3b82f6',
+            '#10b981',
+            '#f59e0b',
+            '#ef4444',
+            '#8b5cf6',
+            '#ec4899',
+            '#06b6d4',
+            '#84cc16',
+        ];
+
+        $datasets = [];
+
+        foreach ($keperluan as $index => $jenis) {
+            $datasets[] = [
+                'label' => $jenis,
+                'data' => $petugas->map(function ($namaPetugas) use ($data, $jenis) {
+                    return $data
+                        ->where('petugas', $namaPetugas)
+                        ->where('keperluan', $jenis)
+                        ->sum('total');
+                })->toArray(),
+                'backgroundColor' => $colors[$index % count($colors)],
+                'borderWidth' => 1,
+            ];
+        }
+
         return [
-            'datasets' => [
-                [
-                    'label' => 'Jumlah Tamu Dilayani',
-                    'data' => $performa->values()->toArray(),
-                    'backgroundColor' => '#3b82f6', 
-                    'borderColor' => '#2563eb',
-                    'borderWidth' => 1,
-                ],
-            ],
-            'labels' => $performa->keys()->toArray(),
+            'datasets' => $datasets,
+            'labels' => $petugas->toArray(),
         ];
     }
+
 
     // tipe chart
     protected function getType(): string
@@ -77,16 +105,33 @@ class PstOfficerChart extends ChartWidget
     }
 
     // option
+
     protected function getOptions(): ?array
     {
         return [
-            'indexAxis' => 'y', // horzontal bar
+            'indexAxis' => 'y',
+
             'scales' => [
                 'x' => [
+                    'stacked' => true,
                     'beginAtZero' => true,
                     'ticks' => [
-                        'precision' => 0, // bilangan bulat
+                        'precision' => 0,
                     ],
+                    'title' => [
+                        'display' => true,
+                        'text' => 'Jumlah Layanan',
+                    ],
+                ],
+
+                'y' => [
+                    'stacked' => true,
+                ],
+            ],
+
+            'plugins' => [
+                'legend' => [
+                    'position' => 'top',
                 ],
             ],
         ];

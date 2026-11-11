@@ -2,5 +2,5 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-    App\Providers\Filament\SitasiPanelProvider::class,
+    App\Providers\Filament\PojurPanelProvider::class,
 ];

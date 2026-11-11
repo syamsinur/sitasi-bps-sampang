@@ -8,7 +8,7 @@ export default defineConfig({
             input: [
                 "resources/css/app.css",
                 "resources/js/app.js",
-                "resources/css/filament/sitasi/theme.css",
+                "resources/css/filament/pojur/theme.css",
             ],
             refresh: true,
             fonts: [

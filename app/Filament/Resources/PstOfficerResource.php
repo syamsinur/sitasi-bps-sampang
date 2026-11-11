@@ -14,6 +14,7 @@ use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextColumn\TextColumnSize;
@@ -77,13 +78,12 @@ class PstOfficerResource extends Resource
                     ->directory('foto_petugas')
                     ->image()
                     ->imageEditor()
-                    ->maxSize(2048)
+                    ->imageCropAspectRatio('1:1')
                     ->imageEditorAspectRatios([
-                        '16:9',
-                        '4:3',
-                        '1:1'
+                        '1:1',
                     ])
-                    ->required(),
+                    ->maxSize(2048)
+                    ->nullable(),
             ])
             ->columns(1);
     }
@@ -105,17 +105,11 @@ class PstOfficerResource extends Resource
                         ->alignment('center'),
 
                     Stack::make([
-                        ImageColumn::make('foto')
-                            ->label('Foto')
-                            ->disk('public')
-                            ->height(120)
-                            ->width(120)
-                            ->circular()
-                            ->alignment('center'),
+                        ViewColumn::make('foto')
+                            ->view('filament.foto-petugas'),
                     ])->extraAttributes([
                         'class' => 'p-4'
                     ]),
-
                     Stack::make([
                         TextColumn::make('jenis')
                             ->label('Jenis')
