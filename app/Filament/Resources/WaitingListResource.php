@@ -183,6 +183,7 @@ class WaitingListResource extends Resource
                         FileUpload::make('dokumentasi')
                             ->label('Upload Foto')
                             ->image()
+                            ->extraInputAttributes(['capture', 'user']) // or 'environment' for rear camera
                             ->disk('public')
                             ->directory('dokumentasi')
                             ->nullable(),

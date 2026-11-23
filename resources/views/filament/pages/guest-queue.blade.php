@@ -296,11 +296,11 @@
 
             const data = Array.isArray(event) ? event[0] : event;
             
-            let noomrVar = data?.nomor ?? '000';
+            let nomorVar = data?.nomor ?? '000';
             let petugasVar = data?.petugas ?? 'Pelayanan';
 
             // split huruf dan angka
-            let parts = String(noomrVar).split('-');
+            let parts = String(nomorVar).split('-');
             let huruf = parts[0] ?? ''; 
             let angka = parts[1] ?? '';
 
@@ -329,10 +329,10 @@
                 window.speechSynthesis.cancel();
 
                 // Format kalimat panggilan
-                const teksPanggilan = `Nomor antrean ${nomorBersih}, silakan menuju ke meja ${petugasVar}`;
+                const teksPanggilan = `Nomor antrean ${nomorBersih}, seelakan menuju ke meja paliyenan`;
                 const utterance = new SpeechSynthesisUtterance(teksPanggilan);
                 utterance.lang = 'id-ID';
-                utterance.rate = 0.55; // Kecepatan lambat-normal agar jelas
+                utterance.rate = 0.7; // Kecepatan suara
                 
                 window.speechSynthesis.speak(utterance);
             }

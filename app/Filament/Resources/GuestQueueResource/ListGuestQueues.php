@@ -18,45 +18,81 @@ class ListGuestQueues extends Page
     // title
     protected static ?string $title = 'Antrean Tamu';
 
-    // Properti untuk melacak antrean terbaru
+    // Property
     public ?int $latestQueueId = null;
+    public ?int $lastModalQueueId = null;
     public ?int $latestProcessedId = null;
     public $activeModalQueue = null;
     public bool $showModal = false;
 
+
     public function mount()
     {
-        // Ambil ID tamu terakhir saat halaman pertama kali dibuka
-        $latest = WaitingList::latest('id')->first();
-        $this->latestQueueId = $latest?->id;
+        // query for collect data limit 20 rows
+        $rows = WaitingList::query()
+            ->select('id', 'status', 'updated_at')
+            ->latest('id')
+            ->limit(20)
+            ->get();
+
+        // get latest ID tamu
+        $latestId = $rows->first()?->id;
+        $this->latestQueueId = $latestId;
+        $this->lastModalQueueId = $latestId;
+
+        // get latest ID tamu with status 'Diproses'
+        $this->latestProcessedId = $rows
+            ->where('status', 'diproses')
+            ->sortByDesc('updated_at')
+            ->first()?->id;
     }
 
     // Fungsi yang akan dipanggil secara periodik oleh wire:poll di Blade
     public function checkForNewQueue()
     {
-        $latest = WaitingList::latest('id')->first();
+        // query for collect data limit 20 rows
+        $rows = WaitingList::query()
+            ->latest('id')
+            ->limit(20)
+            ->get();
 
-        // Jika ada ID baru yang masuk (berbeda dari sebelumnya)
-        if ($latest && $latest->id !== $this->latestQueueId) {
+        $latest = $rows->first();
+
+        // cek antrean with latest ID
+        if ($latest
+            && $this->latestQueueId !== null
+            && $latest->id > $this->latestQueueId
+            && $latest->id !== $this->lastModalQueueId
+        ) {
             $this->latestQueueId = $latest->id;
-            $this->activeModalQueue = $latest;
-            $this->showModal = true; // Munculkan modal otomatis!
+            $this->lastModalQueueId = $latest->id;
+
+            // show modal if status 'menunggu
+            if ($latest->status === 'Menunggu') {
+                $this->activeModalQueue = $latest;
+                $this->showModal = true; 
+            }
+        } elseif ($latest && $this->latestQueueId === null) {
+            $this->latestQueueId = $latest->id;
+            $this->lastModalQueueId = $latest->id;        
         }
 
-        // 2. Cek tamu terbaru yang statusnya BERUBAH MENJADI 'Diproses'
-        $tamuDiproses = WaitingList::query()
+        // cek latest tamu with status 'Diproses'
+        $tamuDiproses = $rows
             ->where('status', 'Diproses')
-            ->latest('updated_at')
+            ->sortByDesc('updated_at')
             ->first();
 
-        // Jika ada tamu diproses DAN ID-nya berbeda dari yang terakhir disuarakan
         if ($tamuDiproses && $tamuDiproses->id !== $this->latestProcessedId) {
-            $this->latestProcessedId = $tamuDiproses->id; // Simpan ID agar tidak berulang
+            $this->latestProcessedId = $tamuDiproses->id;
 
-            // Picu suara panggilan ke browser
+            // if modal is open, close modal
+            $this->showModal = false;
+            $this->activeModalQueue = null;
+
             $this->dispatch('putar-suara-antrean', [
                 'nomor'   => $tamuDiproses->nomor_antrean,
-                'petugas' => $tamuDiproses->petugas ?? 'Pelayanan'
+                'petugas' => $tamuDiproses->petugas ?? 'Pelayanan',
             ]);
         }
     }
@@ -69,38 +105,49 @@ class ListGuestQueues extends Page
     
     protected function getViewData(): array
     {
+        $listKeperluan = ['PST', 'NON PST'];
+        $dataPerKeperluan = $this->getAntreanProses($listKeperluan);
+
         return [
-            'pst' => $this->getAntreanProses('PST'),
-            'nonPst' => $this->getAntreanProses('NON PST'),
+            'pst' => $dataPerKeperluan['PST'],
+            'nonPst' => $dataPerKeperluan['NON PST'],
         ];
     }
 
-    private function getAntreanProses(string $keperluan): array
+    private function getAntreanProses(array $keperluan): array
     {
-        // tamu Diproses
-        $tamuAktif = WaitingList::query()
-            ->where('keperluan', $keperluan)
-            ->where('status', 'Diproses')
-            ->latest('updated_at')
-            ->first();
-
         // total tamu bulan berjalan
         $awalBulan = now()->startOfMonth();
-        $awalBulanDepan = now()
-            ->addMonthNoOverflow()
-            ->startOfMonth();
+        $awalBulanDepan = now()->addMonthNoOverflow()->startOfMonth();
 
-        $totalBulanIni = WaitingList::query()
-            ->where('keperluan', $keperluan)
+        // query for collect data field keperluan
+        $grouped = WaitingList::query()
+            ->select('id', 'keperluan', 'status', 'nomor_antrean', 'name', 'instansi', 'petugas', 'updated_at')
+            ->whereIn('keperluan', $keperluan)
             ->whereBetween('created_at', [$awalBulan, $awalBulanDepan])
-            ->count();
+            ->get()
+            ->groupBy('keperluan');
 
-        return [
-            'nomor'    => $tamuAktif ? $tamuAktif->nomor_antrean : '-',
-            'nama'     => $tamuAktif ? $tamuAktif->name : 'Tidak ada antrean',
-            'instansi' => $tamuAktif ? $tamuAktif->instansi : '-',
-            'petugas'  => $tamuAktif ? $tamuAktif->petugas : '-',
-            'total'    => $totalBulanIni,
-        ];
+        $result = [];
+
+        foreach ($keperluan as $k) {
+            $items = $grouped->get($k, collect());
+
+            // tamu Diproses
+            $tamuAktif = $items
+                ->where('status', 'Diproses')
+                ->sortByDesc('updated_at')
+                ->first();
+
+            $result[$k] = [
+                'nomor' => $tamuAktif?->nomor_antrean ?? '-',
+                'nama' => $tamuAktif?->name ?? 'Tidak ada antrean',
+                'instansi' => $tamuAktif?->instansi ?? '-',
+                'petugas' => $tamuAktif?->petugas ?? '-',
+                'total' => $items->count(),
+            ];
+        }
+
+        return $result;
     }
 }
