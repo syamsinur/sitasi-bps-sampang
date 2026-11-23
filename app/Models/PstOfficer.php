@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
-#[Fillable(['no_urut', 'name', 'nip', 'work_team_id', 'nomor_hp', 'jenis', 'foto'])]
+#[Fillable(['no_urut', 'name', 'nip', 'work_team_id', 'nomor_hp', 'jenis', 'foto', 'rating'])]
 class PstOfficer extends Model
 {
     protected static function booted()
@@ -18,9 +20,14 @@ class PstOfficer extends Model
         });
     }
 
-    public function work_team()
+    public function work_team() : BelongsTo
     {
         return $this->belongsTo(WorkTeam::class);
+    }
+
+    public function guestRatings() : HasMany
+    {
+        return $this->hasMany(QueueRating::class);
     }
 
     public function getFotoUrlAttribute(): ?string

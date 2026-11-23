@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('nomor_hp');
             $table->string('jenis');
             $table->string('foto')->nullable();
+            $table->decimal('rating', 3, 2)->default(0.00);
             $table->timestamps();
         });
     }

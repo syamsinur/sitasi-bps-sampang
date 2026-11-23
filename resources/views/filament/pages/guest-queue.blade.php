@@ -90,7 +90,7 @@
 
             {{-- NON PST: KANAN --}}
             <div
-                class="relative min-w-0 overflow-hidden rounded-2xl border-2 border-emerald-500 bg-white shadow-lg dark:border-emerald-400 dark:bg-gray-900">
+                class="relative min-w-0 overflow-hidden rounded-2xl border-2 border-blue-500 bg-white shadow-lg dark:border-emerald-400 dark:bg-gray-900">
 
                 <div class="h-3 bg-blue-600"></div>
 
