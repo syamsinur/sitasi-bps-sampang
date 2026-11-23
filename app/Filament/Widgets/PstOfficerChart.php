@@ -67,12 +67,6 @@ class PstOfficerChart extends ChartWidget
         $colors = [
             '#3b82f6',
             '#10b981',
-            '#f59e0b',
-            '#ef4444',
-            '#8b5cf6',
-            '#ec4899',
-            '#06b6d4',
-            '#84cc16',
         ];
 
         $datasets = [];
@@ -87,7 +81,7 @@ class PstOfficerChart extends ChartWidget
                         ->sum('total');
                 })->toArray(),
                 'backgroundColor' => $colors[$index % count($colors)],
-                'borderWidth' => 1,
+                'borderWidth' => 0,
             ];
         }
 
