@@ -20,12 +20,12 @@ class PstOfficer extends Model
         });
     }
 
-    public function work_team() : BelongsTo
+    public function workTeam() : BelongsTo
     {
         return $this->belongsTo(WorkTeam::class);
     }
 
-    public function guestRatings() : HasMany
+    public function queueRatings() : HasMany
     {
         return $this->hasMany(QueueRating::class);
     }
@@ -33,7 +33,7 @@ class PstOfficer extends Model
     public function getFotoUrlAttribute(): ?string
     {
         if ($this->foto && Storage::disk('public')->exists($this->foto)) {
-            return Storage::disk('public')->url($this->foto);
+            return Storage::url($this->foto);
         }
 
         return null;

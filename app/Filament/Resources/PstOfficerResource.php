@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PstOfficerResource\Pages;
 use App\Filament\Resources\PstOfficerResource\RelationManagers;
 use App\Models\PstOfficer;
-use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -13,7 +12,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
@@ -59,7 +57,7 @@ class PstOfficerResource extends Resource
                     ->required(),
                 Select::make('work_team_id')
                     ->label('Work Team')
-                    ->relationship('work_team', 'name')
+                    ->relationship('workTeam', 'name')
                     ->required(),
                 TextInput::make('nomor_hp')
                     ->label('Nomor HP')
@@ -92,6 +90,10 @@ class PstOfficerResource extends Resource
     {
         // table list
         return $table
+        ->modifyQueryUsing(fn (Builder $query) => $query->withCount('queueRatings'))
+        ->defaultSort(function (Builder $query): Builder {
+            return $query->orderBy('rating', 'desc')->orderBy('no_urut', 'asc');
+        })
             ->contentGrid([
                 'md' => 3,
                 'xl' => 4,
@@ -120,7 +122,11 @@ class PstOfficerResource extends Resource
                         TextColumn::make('hari')
                             ->label('Hari Tugas')
                             ->alignment('center'),
-                    ])
+                        TextColumn::make('rating')
+                            ->label('Rata-Rata Rating')
+                            ->view('filament.officer-rating-stars'),
+                    ]),
+
                 ]),
 
             ])

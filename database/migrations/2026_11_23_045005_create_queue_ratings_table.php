@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('guest_book_id')->constrained()->cascadeOnDelete();
             $table->foreignId('pst_officer_id')->constrained()->cascadeOnDelete();
             $table->unsignedTinyInteger('rating');
-            $table->text('comment')->nullable();
             $table->string('keperluan')->index();
+            $table->text('comment')->nullable();
             $table->timestamps();
             // Cegah 1 record buku tamu memberi rating lebih dari sekali
             $table->unique('guest_book_id');

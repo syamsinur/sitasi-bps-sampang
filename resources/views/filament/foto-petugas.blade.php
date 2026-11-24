@@ -3,10 +3,10 @@
     $fotoUrl = $petugas?->foto_url;
 @endphp
 
-<div class="flex items-center justify-center py-2">
-    <div class="w-32 h-32 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 shadow-sm border-2 border-orange-200 dark:border-gray-600 shrink-0 flex items-center justify-center" style="width: 128px; height: 128px; min-width: 128px; min-height: 128px;">
+<div class="flex items-center justify-center py-2 mx-auto">
+    <div class="w-40 h-40 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 shadow-sm border-2 border-orange-200 dark:border-gray-600 shrink-0 flex items-center justify-center" style="width: 160px; height: 160px; min-width: 128px; min-height: 128px;">
         @if ($fotoUrl)
-            <img src="{{ $fotoUrl }}" alt="{{ $petugas->name }}" class="w-full h-full rounded-full object-cover" style="width: 128px; height: 128px; object-fit: cover;">
+            <img src="{{ $fotoUrl }}" alt="{{ $petugas->name }}" class="w-full h-full rounded-full object-cover" style="width: 160px; height: 160px; object-fit: cover;">
         @else
             <div class="w-full h-full flex items-center justify-center text-gray-400 dark:text-gray-500">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24" style="width: 64px; height: 64px;">
