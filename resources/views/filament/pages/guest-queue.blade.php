@@ -1,5 +1,6 @@
 <x-filament-panels::page>
     <div wire:poll.3s="checkForNewQueue" class="space-y-2">
+
         {{-- Informasi pembaruan --}}
         <div
             class="inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-3 text-xs font-medium text-green-700 dark:border-green-900 dark:bg-green-950 dark:text-green-400">
@@ -9,6 +10,34 @@
                 <span class="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
             </span>
             Pembaruan otomatis
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+
+            {{-- select tamu --}}
+            <select
+                wire:model.live="selectedQueueId"
+                aria-label="Pilih Tamu"
+                class="w-48 rounded-xl border border-gray-300 bg-white px-3 py-2 text-xs font-medium text-gray-800 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
+            >
+                <option value="">-- Pilih Tamu --</option>
+                @foreach ($listTamu ?? [] as $tamu)
+                    <option value="{{ $tamu->id }}">
+                        {{ $tamu->nomor_antrean }} — {{ $tamu->name }}
+                    </option>
+                @endforeach
+            </select>
+
+            {{-- tombol tampilkan qr --}}
+            <button
+                type="button"
+                wire:click="openSelectedQr"
+                @disabled(empty($selectedQueueId))
+                class="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+                <x-heroicon-o-qr-code class="h-4 w-4" />
+                Tampilkan QR
+            </button>
         </div>
 
         {{-- Kartu Antrean: Kiri dan Kanan --}}
@@ -196,7 +225,6 @@
             </div>
         </div>
     @endif
-
 
     {{-- Modal QR Code --}}
     @if ($showModal && $activeModalQueue)

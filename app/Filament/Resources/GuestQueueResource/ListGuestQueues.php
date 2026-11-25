@@ -3,9 +3,9 @@
 namespace App\Filament\Resources\GuestQueueResource;
 
 use App\Filament\Resources\GuestQueueResource as GuestQueueResource;
-use App\Models\PstOfficer;
 use App\Models\WaitingList;
 use Filament\Resources\Pages\Page;
+use Illuminate\Support\Collection;
 
 class ListGuestQueues extends Page
 {
@@ -24,41 +24,86 @@ class ListGuestQueues extends Page
     public ?int $latestProcessedId = null;
     public $activeModalQueue = null;
     public bool $showModal = false;
+    public ?int $selectedQueueId = null;
 
+    /** @var Collection<int, WaitingList> */
+    public Collection $listTamu;
 
     public function mount()
     {
-        // query for collect data limit 20 rows
-        $rows = WaitingList::query()
-            ->select('id', 'status', 'updated_at')
-            ->latest('id')
-            ->limit(20)
-            ->get();
+        $this->listTamu = collect();
+
+        // Load recent queues
+        $rows = $this->LoadRecentQueues();
 
         // get latest ID tamu
         $latestId = $rows->first()?->id;
         $this->latestQueueId = $latestId;
         $this->lastModalQueueId = $latestId;
+        $this->selectedQueueId = $latestId;
 
         // get latest ID tamu with status 'Diproses'
         $this->latestProcessedId = $rows
-            ->where('status', 'diproses')
+            ->where('status', 'Diproses')
             ->sortByDesc('updated_at')
             ->first()?->id;
+    }
+
+    // Load list tamu
+    private function LoadRecentQueues(): Collection
+    {
+        $rows = WaitingList::query()
+            ->select('id', 'token', 'nomor_antrean', 'name', 'instansi', 'keperluan', 'petugas', 'status', 'updated_at')
+            ->latest('id')
+            ->limit(20)
+            ->get();
+
+        $this->listTamu = $rows;
+        return $rows;
+    }
+
+    // Open modal for selected queue
+    public function openQrForQueue(?int $queueId = null): void
+    {
+        $targetId = $queueId ?? $this->selectedQueueId;
+
+        if (! $targetId) {
+            return;
+        }
+
+        $this->selectedQueueId = $targetId;
+
+        $tamu = $this->listTamu->firstWhere('id', $targetId) ?? WaitingList::query()
+            ->select('id', 'token', 'nomor_antrean', 'name', 'instansi', 'keperluan', 'petugas', 'status', 'updated_at')
+            ->find($targetId);
+
+        if (! $tamu || empty($tamu->token)) {
+            return;
+        }
+
+        $this->activeModalQueue = $tamu;
+        $this->showModal = true;
+    }
+
+    // Open function openQrForQueue
+    public function openSelectedQr(): void
+    {
+        $this->openQrForQueue($this->selectedQueueId);
     }
 
     // Fungsi yang akan dipanggil secara periodik oleh wire:poll di Blade
     public function checkForNewQueue()
     {
-        // query for collect data limit 20 rows
-        $rows = WaitingList::query()
-            ->latest('id')
-            ->limit(20)
-            ->get();
+        // Load recent queues
+        $rows = $this->LoadRecentQueues();
+
+        if (! $this->selectedQueueId && $rows->isNotEmpty()) {
+            $this->selectedQueueId = $rows->first()->id;
+        }
 
         $latest = $rows->first();
 
-        // cek antrean with latest ID
+        // Cek antrean with latest ID
         if ($latest
             && $this->latestQueueId !== null
             && $latest->id > $this->latestQueueId
@@ -66,18 +111,20 @@ class ListGuestQueues extends Page
         ) {
             $this->latestQueueId = $latest->id;
             $this->lastModalQueueId = $latest->id;
+            $this->selectedQueueId = $latest->id;
 
-            // show modal if status 'menunggu
+            // Show modal if status 'menunggu
             if ($latest->status === 'Menunggu') {
                 $this->activeModalQueue = $latest;
                 $this->showModal = true; 
             }
         } elseif ($latest && $this->latestQueueId === null) {
             $this->latestQueueId = $latest->id;
-            $this->lastModalQueueId = $latest->id;        
+            $this->lastModalQueueId = $latest->id;
+            $this->selectedQueueId = $latest->id;
         }
 
-        // cek latest tamu with status 'Diproses'
+        // Cek latest tamu with status 'Diproses'
         $tamuDiproses = $rows
             ->where('status', 'Diproses')
             ->sortByDesc('updated_at')
@@ -97,6 +144,7 @@ class ListGuestQueues extends Page
         }
     }
 
+    // Close modal
     public function closeModal()
     {
         $this->showModal = false;
